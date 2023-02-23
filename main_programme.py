@@ -823,7 +823,7 @@ def choix2(opt):
 # =============================================
 
 # Afficher le menu
-menu1()
+#menu1()
 
 # ============================================
 # Fonctions a utilisees
@@ -937,6 +937,6 @@ def faire_tous(chemin_du_qcmpdf):
     f.close()
 
 # Fonction qui s'execute
-#faire_tous("Etduants/e1")
+faire_tous("Etduants/e1")
 
     
