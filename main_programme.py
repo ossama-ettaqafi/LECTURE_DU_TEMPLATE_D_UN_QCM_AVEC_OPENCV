@@ -186,7 +186,7 @@ def images_rpns(qst_path, nbr_quest):
 
             if (h >= 40 and h <= 46) and (w >= 55 and w <= 65):
                 # Selectioner seulement le chiffre qui existe dans l'image du choix d'une question
-                x, y, h, w = (x + 15, y + 5, h - 11, w - 28)
+                x, y, h, w = (x + 15, y + 7, h - 13, w - 28)
 
                 selected = img[y:y+h, x:x+w]
                 selected = cv2.resize(selected, (440, 550))
@@ -823,7 +823,7 @@ def choix2(opt):
 # =============================================
 
 # Afficher le menu
-#menu1()
+menu1()
 
 # ============================================
 # Fonctions a utilisees
@@ -937,6 +937,6 @@ def faire_tous(chemin_du_qcmpdf):
     f.close()
 
 # Fonction qui s'execute
-faire_tous("Etduants/e1")
+#faire_tous("Etudiants/e1")
 
     
