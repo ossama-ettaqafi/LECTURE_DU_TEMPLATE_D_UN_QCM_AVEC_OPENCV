@@ -936,8 +936,8 @@ def faire_tous():
         print(retourner_lesinfos())
         print(retourner_lesreponses(nb))
 
-        f.write(f"$tableau_infos[{count}] = {retourner_lesinfos()}\n".replace('\n', '').replace('][', '],['))
-        f.write(f"$tableau_reponses[{count}] = {retourner_lesreponses(nb)}\n".replace('\n', '').replace('][', '],['))
+        f.write("$tableau_infos["+count+"] = "+retourner_lesinfos().replace('\n', '').replace('][', ',')+"\n")
+        f.write("$tableau_reponses["+count+"] = '"+tab2str(retourner_lesreponses(nb))+"'\n")
 
         count += 1
 
