@@ -7,7 +7,7 @@
         traiter ce qcm, donc tous les tailles et les positions
         dependent a ce dernier)
 
-        la lecture de l'image peut prend le .Temps seulent le
+        la lecture de l'image peut prend le .temps seulent le
         pytesseract {il faut l'installer dans votre PC et preciser
         le chemin "D:\Program Files\Tesseract-OCR\tesseract.exe")
         
@@ -29,7 +29,7 @@ import numpy as np
 import shutil
 import fnmatch
 import tkinter as tk
-import fitz
+import fitz         # pip install PyMuPDF==1.16.14
 
 from tkinter import filedialog
 from imutils import contours
@@ -46,63 +46,8 @@ dossier = ['nom_prenom', 'cours_sec', 'date_eva']
 chiffre = np.full(10, '')
 matricule = np.full(6, '')
 
-qcm_path = ['.Temp/page1.jpg', '.Temp/page2.jpg']
+qcm_path = ['.temp/page1.jpg', '.temp/page2.jpg']
 pdf_path = ''
-
-# Tester si l'image est inversee
-#           Retourner True : si l'image est inversee
-#           Retourner False : si l'image n'est pas inversee
-def est_inversee(img_path):
-    # Declarer un tableau
-    tableau = np.full(24,'')
-    
-    # Lire l'image
-    image = cv2.imread(img_path)
-    image = cv2.resize(image, (2481, 3508))
-
-    # Changer les couleurs de l'image
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY_INV)[1]
-    cnts,hierarchy = cv2.findContours(thresh, 1, 2)
-    cnts, _ = contours.sort_contours(cnts, "left-to-right")
-
-    for cnt in cnts:
-       x1,y1 = cnt[0][0]
-       approx = cv2.approxPolyDP(cnt, 0.01*cv2.arcLength(cnt, True), True)
-       if len(approx):
-            x, y, w, h = cv2.boundingRect(cnt)
-            
-            if (h >= 150 and h <= 160) and (w >= 635 and w <= 645):
-                # Selectioner la case
-                image = image[y:y+h, x:x+w]
-                
-                x, y, h, w = (105, 55, 38, 376)
-                
-                selected = image[y:y+h, x:x+w]
-                selected = cv2.resize(selected, (w*5, h*5))
-
-                # Rendre l'image plus lisable
-                selected = haute_qualite(selected)
-        
-                data = pytesseract.image_to_string(selected)
-                data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
-                tableau = data
-
-                break
-
-    if tableau == 'unecasemaximumparligne':
-        return False
-    else:
-        return True
-
-# Reverser l'image
-def inverser_image(img_path):
-    img = cv2.imread(img_path)
-    
-    if est_inversee(img_path) == True:
-        img = cv2.flip(img, -1)
-
-    return img
 
 # Fonction 1 : permet d'ameliorer la qualite d'une image
 def haute_qualite(image):
@@ -154,7 +99,7 @@ def tab2str(tableau):
     return string[::-1]
 
 # Fonction 5 : calculer le nombre des questions dans un qcm du path donne
-def nbr_questions(img_path):
+def calculer_qsts(img_path):
     #Lire l'image, Changer la taille et les couleurs
     image = inverser_image(img_path)
     image = cv2.resize(image, (2481, 3508))
@@ -180,8 +125,8 @@ def nbr_questions(img_path):
                  
     return num
 
-# Fonction 6 : permet d'extraire toutes les questions depuis le path du qcm donne
-def extraire_questions(img_path):
+# Fonction 6 : permet d'extraire toutes les images des questions depuis le path du qcm donne
+def images_qsts(img_path):
     #Lire l'image, Changer la taille et les couleurs
     image = inverser_image(img_path)
     image = cv2.resize(image, (2481, 3508))
@@ -204,12 +149,12 @@ def extraire_questions(img_path):
                 # Selectioner la question
                 selected = image[y:y+h, x:x+w]
                 selected = cv2.resize(selected, (w*6,h*6))
-                               
+                            
                 # Selectioner le nombre de la question
                 qx=0 
                 qy=360
                 ques_num = selected[qy:qy+270, qx:qx+398]
-
+                
                 # Rendre l'image plus lisable
                 ques_num = haute_qualite(ques_num)
        
@@ -218,14 +163,14 @@ def extraire_questions(img_path):
         
                 # Sauvegarder les images dans le dossier 'questions'
                 # questions/numero_question.jpg              
-                cv2.imwrite('.Temp/questions/{}.jpg'.format(number), selected)
+                cv2.imwrite('.temp/questions/{}.jpg'.format(number), selected)
 
-# Fonction 7 : permet d'extraire les responses depuis l'image d'une question
-            # img_path : le chemin de l'image
+# Fonction 7 : permet d'extraire les images des responses depuis l'image d'une question a path donne
+            # qst_path : le chemin de l'image
             # nbr_quest : le nombre de la question
-def extraire_reponses(img_path, nbr_quest):
+def images_rpns(qst_path, nbr_quest):
     # Lire l'image
-    img = cv2.imread(img_path)
+    img = cv2.imread(qst_path)
     img = cv2.resize(img, (900, 240))
 
     # Changer les couleurs de l'image
@@ -234,49 +179,51 @@ def extraire_reponses(img_path, nbr_quest):
     contours,hierarchy = cv2.findContours(thresh, 1, 2)
 
     for cnt in contours:
-       x1,y1 = cnt[0][0]
-       approx = cv2.approxPolyDP(cnt, 0.01*cv2.arcLength(cnt, True), True)
-       if len(approx):
-          x, y, w, h = cv2.boundingRect(cnt)
+        x1,y1 = cnt[0][0]
+        approx = cv2.approxPolyDP(cnt, 0.01*cv2.arcLength(cnt, True), True)
+        if len(approx):
+            x, y, w, h = cv2.boundingRect(cnt)
 
-          if (h >= 30 and h <= 40) and (w >= 50 and w <= 60):
-             # Selectioner seulement le nombre de la question (qui existe au gauche de l'image)
-             x, y, h, w = (x + 15, y + 2, h - 4, w - 28)
-                            
-             selected = img[y:y+h, x:x+w]
-             selected = cv2.resize(selected, (w*3, h*3))
+            if (h >= 40 and h <= 46) and (w >= 55 and w <= 65):
+                # Selectioner seulement le chiffre qui existe dans l'image du choix d'une question
+                x, y, h, w = (x + 15, y + 6, h - 11, w - 28)
 
-             # Ameliorer la qualite de l'image
-             selected = haute_qualite(selected)
+                selected = img[y:y+h, x:x+w]
+                selected = cv2.resize(selected, (440, 520))
 
-             if 160 <= y and y <= 170: ch = '2'
-             else: ch = '1'
+                # Ameliorer la qualite de l'image
+                #selected = haute_qualite(selected)
+                kernel = np.ones((5, 5), np.uint8)
+                img_erosion = cv2.erode(img, kernel, iterations=1)
 
-             # Tester si les dossiers deja existent, sinon il va les crees
-             if(os.path.exists('.Temp/reponses/'+str(nbr_quest)+'/{}/'.format(ch))==False):
-                 num = 1
-                 os.mkdir('.Temp/reponses/'+str(nbr_quest)+'/{}/'.format(ch))
-             
-             # Enregistrer chaques reponses dans des dossiers specifies
-             # num_question/ligne/num_reponse.jpg       
-             path = '.Temp/reponses/'+str(nbr_quest)+'/{}/'.format(ch)+str(num)+'.jpg'
-             cv2.imwrite(path, selected)
-                 
-             num += 1
+                if 160 <= y and y <= 170: ch = '2'
+                else: ch = '1'
+
+                # Tester si les dossiers deja existent, sinon il va les crees
+                if(os.path.exists('.temp/reponses/'+str(nbr_quest)+'/{}/'.format(ch))==False):
+                    num = 1
+                    os.mkdir('.temp/reponses/'+str(nbr_quest)+'/{}/'.format(ch))
+
+                # Enregistrer chaques reponses dans des dossiers specifies
+                # num_question/ligne/num_reponse.jpg       
+                path = '.temp/reponses/'+str(nbr_quest)+'/{}/'.format(ch)+str(num)+'.jpg'
+                cv2.imwrite(path, selected)
+
+                num += 1
             
-# Fonction 8 : permet d'extraire les responses depuis un nombre precis des questions
-               # nbr_quests : le nombre des questions dans un qcm
-def depuis_questions(nbr_quests):
-    for q in range(nbr_quests):
+# Fonction 8 : permet d'extraire les images des responses depuis un nombre precis des questions
+               # nbr_qsts : le nombre des questions dans un qcm
+def extraire_rpns_qsts(nbr_qsts):
+    for q in range(nbr_qsts):
         # Tester si les dossiers deja existent, sinon il va les crees
-        if(os.path.exists('.Temp/reponses')==False):
-            os.mkdir('.Temp/reponses')
+        if(os.path.exists('.temp/reponses')==False):
+            os.mkdir('.temp/reponses')
         
-        if(os.path.exists('.Temp/reponses/'+str(q+1))==False):
-            os.mkdir('.Temp/reponses/'+str(q+1))
+        if(os.path.exists('.temp/reponses/'+str(q+1))==False):
+            os.mkdir('.temp/reponses/'+str(q+1))
 
         # Faire la tache pour chaque question
-        extraire_reponses('.Temp/questions/{}.jpg'.format(q+1), q+1)
+        images_rpns('.temp/questions/{}.jpg'.format(q+1), q+1)
 
 # Fonction 9 : completer les cases du tableau par ''
 def completer_tab(tab):
@@ -290,7 +237,7 @@ def completer_tab(tab):
             
     return ntab
 
-# Fonction 10 : trouver les reponses de l'utilisateur
+# Fonction 10 : trouver la reponse de l'utilisateur
 # Le contenue de l'image : qui n'a pas ete reconnu/reste vide c'est la reponse d'utilisateur
 #                          qui a ete reconnu ce choix n'est pas touche par l'utilisateur, ce n'est pas la reponse      
 def trouver_reponse(rep1, rep2):
@@ -329,11 +276,11 @@ def trouver_reponse(rep1, rep2):
 
 # Fonction 11 : permet d'afficher les reponses d'etudiant depuis les images des reponses sauvegardes
 def afficher_reponses(nbr_ques):
-    print("Entrain de traiter, s'il vous plait attender quelques secondes...")
-    
+    print("\t> Les reponses :")
+    #print("Entrain de traiter, s'il vous plait attender quelques secondes...")
     for q in range(nbr_ques):
         for d in range(2):
-            dossier = '.Temp/reponses/'+str(q+1)+'/{}/'.format(d+1)
+            dossier = '.temp/reponses/'+str(q+1)+'/{}/'.format(d+1)
             nf = nbr_fichier(dossier)
             
             # Declaration d'un tableau de (nf) cases
@@ -364,7 +311,7 @@ def afficher_reponses(nbr_ques):
     shutil.rmtree('reponses', ignore_errors=True)
 
 # Fonction 12 : permet d'extraire les informations d'etudiant et de l'evaluation (nom, prenom, matricule, date d'evaluation)
-def extraire_infos(img_path):
+def images_infos(img_path):
     # Lire l'image
     image = inverser_image(img_path)
     image = cv2.resize(image, (2481, 3508))
@@ -389,11 +336,11 @@ def extraire_infos(img_path):
                 selected = image[y:y+h, x:x+w]                  
               
                 # Tester si les dossiers deja existent, sinon il va les crees
-                if(os.path.exists('.Temp/informations/matricule')==False):
-                    os.mkdir('.Temp/informations/matricule')
+                if(os.path.exists('.temp/informations/matricule')==False):
+                    os.mkdir('.temp/informations/matricule')
     
                 # Sauvegarder l'image dans le dossier 'matricule'           
-                cv2.imwrite('.Temp/informations/matricule/matricule.jpg', selected)
+                cv2.imwrite('.temp/informations/matricule/matricule.jpg', selected)
                 
             if (h>=50 and h<=60) and (w>=30 and w<=40):
                 if num > 31:
@@ -416,58 +363,18 @@ def extraire_infos(img_path):
                     i = 2
 
                 # Tester si les dossier deja existent, sinon il va les crees
-                if(os.path.exists('.Temp/informations/'+dossier[i])==False):
-                    os.mkdir('.Temp/informations/'+dossier[i])
+                if(os.path.exists('.temp/informations/'+dossier[i])==False):
+                    os.mkdir('.temp/informations/'+dossier[i])
     
                 # Sauvegarder les images dans des dossiers specifiques           
-                cv2.imwrite('.Temp/informations/'+dossier[i]+'/{}.jpg'.format(num), selected)
+                cv2.imwrite('.temp/informations/'+dossier[i]+'/{}.jpg'.format(num), selected)
 
                 num = num + 1
 
-# Fonction 13 : permet d'extraire les informations depuis le qcm
-def afficher_infos():
-    print("\t==== Informations : ====")
-    print("Entrain de traiter, s'il vous plait attender quelques secondes...")
-    for i in range(3):
-        if i == 0 or i == 1:
-            r = range(31)
-        elif i == 2:
-            r = range(10)
-            
-        for j in r:         
-            # Lire l'image
-            img = cv2.imread('.Temp/informations/' + dossier[i] + '/{}.jpg'.format(j+1))
-            img = cv2.resize(img, (200, 400))
-
-            w, h, x, y = (148, 350, 23, 30)       
-            img = img[y:y+h, x:x+w]
-                
-            # Extraire le texte depuis l'image
-            if i == 0 or i == 1:
-                data = pytesseract.image_to_string(img, lang='eng', config='--psm 13 --oem 3 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-                data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
-                
-                if i == 0: nom_prenom[j] = data
-                elif i == 1: cours_sec[j] = data
-            elif i == 2:
-                data = pytesseract.image_to_string(img, lang='eng', config='--psm 13 --oem 3 -c tessedit_char_whitelist=/0123456789')
-                data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
-                date_eva[j] = data
-                
-    # Pour tester
-    matricule = lire_contenu_matr()
-    print("[ Date de l'evaluation : " + tab2str(date_eva)+ " ]")
-    print("[ Nom et prenom : " + tab2str(nom_prenom).rstrip() + " ]")
-    print("[ Matricule : " + matricule + " ]")
-    print("[ Cours et section : " + tab2str(cours_sec).rstrip() + " ]")
-
-    # Supprimer le dossier 'informations'
-    shutil.rmtree('.Temp/informations', ignore_errors=True)
-
-# Fonction 15 : permet d'extraire les zones a remplir qui se trouve dans l'image du matricule
-def extraire_matr(img_path):
+# Fonction 13 : permet d'extraire les zones a remplir qui se trouve dans l'image du matricule
+def images_mtr(matr_path):
     # Lire l'image
-    img = cv2.imread(img_path)
+    img = cv2.imread(matr_path)
     img = cv2.resize(img, (1200, 800))
     
     # Changer les couleurs de l'image
@@ -493,7 +400,7 @@ def extraire_matr(img_path):
                 elif 710 <= y and y <= 730: ch = '5'
 
                 # Selectioner seulement le caractere encadre
-                x, y, h, w = (x + 15, y + 2, h - 4, w - 28)
+                x, y, h, w = (x + 15, y + 4, h - 5, w - 28)
     
                 selected = img[y:y+h, x:x+w]
                 selected = cv2.resize(selected, (w*5, h*5))
@@ -503,21 +410,21 @@ def extraire_matr(img_path):
                     
                 # Tester si les dossiers deja existent, sinon il va les crees
                 if ch != '0':
-                    if(os.path.exists('.Temp/informations/matricule/{}/'.format(ch))==False):
+                    if(os.path.exists('.temp/informations/matricule/{}/'.format(ch))==False):
                         num = 1
-                        os.mkdir('.Temp/informations/matricule/{}/'.format(ch))
+                        os.mkdir('.temp/informations/matricule/{}/'.format(ch))
                 else:
                     num = 1
                     
                 # Enregistrer les chiffres des matricules dans des dossier
                 # informations/matricule/nbr_chiffre/matr.jpg
-                if ch == '0': path = '.Temp/informations/matricule/'+str(num)+'.jpg'
-                else: path = '.Temp/informations/matricule/{}/'.format(ch)+str(num)+'.jpg'
+                if ch == '0': path = '.temp/informations/matricule/'+str(num)+'.jpg'
+                else: path = '.temp/informations/matricule/{}/'.format(ch)+str(num)+'.jpg'
                 cv2.imwrite(path, selected)
                 
                 num += 1
 
-# Fonction 16 : trouver le nombre masque depuis le tableau
+# Fonction 14 : trouver le nombre masque depuis le tableau
 def nombre_masque(tab):
         num = 9
         c = False
@@ -531,7 +438,7 @@ def nombre_masque(tab):
         else:
           return ''
 
-# Fonction 17 : completer et trier le matricule
+# Fonction 15 : completer et trier le matricule
 def completer_trier(tab):
     # Completer le tableau
     if len(tab) < 10:
@@ -549,8 +456,8 @@ def completer_trier(tab):
         
     return base
 
-# Fonction 17 : permet d'extraire le matricule depuis la premiere page du qcm
-def lire_contenu_matr():
+# Fonction 16 : permet d'extraire le matricule depuis la premiere page du qcm
+def extraire_matr():
         # Lire le contenu des images puis extraire le nombre masque dans l'image
         for i in range(6):
                 im_num = 0
@@ -558,7 +465,7 @@ def lire_contenu_matr():
                 if i == 0:
                     nf = 1
                 else:
-                    dossier = '.Temp/informations/matricule/'+str(i)+'/'
+                    dossier = '.temp/informations/matricule/'+str(i)+'/'
                     nf = nbr_fichier(dossier)
             
                 for j in range(nf):
@@ -566,7 +473,7 @@ def lire_contenu_matr():
                     
                         # Lire l'image
                         if i == 0:
-                            path = '.Temp/informations/matricule/1.jpg'.format(im_num)
+                            path = '.temp/informations/matricule/1.jpg'.format(im_num)
                             if os.path.exists(path) == True:
                                 img = cv2.imread(path)
                             else:
@@ -590,7 +497,47 @@ def lire_contenu_matr():
 
         return tab2str(matricule)[::-1]
 
-# Fonction 18 : permet d'extraire les donnees depuis un qcm
+# Fonction 17 : permet d'extraire les informations depuis le qcm
+def afficher_infos():
+    print("\t> Les informations :")
+    #print("Entrain de traiter, s'il vous plait attender quelques secondes...")
+    for i in range(3):
+        if i == 0 or i == 1:
+            r = range(31)
+        elif i == 2:
+            r = range(10)
+            
+        for j in r:         
+            # Lire l'image
+            img = cv2.imread('.temp/informations/' + dossier[i] + '/{}.jpg'.format(j+1))
+            img = cv2.resize(img, (200, 400))
+
+            w, h, x, y = (148, 350, 23, 30)       
+            img = img[y:y+h, x:x+w]
+                
+            # Extraire le texte depuis l'image
+            if i == 0 or i == 1:
+                data = pytesseract.image_to_string(img, lang='eng', config='--psm 13 --oem 3 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+                data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
+                
+                if i == 0: nom_prenom[j] = data
+                elif i == 1: cours_sec[j] = data
+            elif i == 2:
+                data = pytesseract.image_to_string(img, lang='eng', config='--psm 13 --oem 3 -c tessedit_char_whitelist=/0123456789')
+                data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
+                date_eva[j] = data
+                
+    # Pour tester
+    matricule = extraire_matr()
+    print("[ Date de l'evaluation : " + tab2str(date_eva)+ " ]")
+    print("[ Nom et prenom : " + tab2str(nom_prenom).rstrip() + " ]")
+    print("[ Matricule : " + matricule + " ]")
+    print("[ Cours et section : " + tab2str(cours_sec).rstrip() + " ]")
+
+    # Supprimer le dossier 'informations'
+    shutil.rmtree('.temp/informations', ignore_errors=True)
+    
+# Fonction 18 : permet d'extraire les images des donnees depuis un qcm
                # 0 - les informations
                # 1 - les responses
 def extraire(type):
@@ -598,31 +545,31 @@ def extraire(type):
     # Extraire les informations qui existe au haut de la premiere page du qcm
     if type == 0:
             # Tester si le dossier deja existe, sinon il va le creer
-            if(os.path.exists('.Temp/informations')==False):
-                os.mkdir('.Temp/informations')
+            if(os.path.exists('.temp/informations')==False):
+                os.mkdir('.temp/informations')
                 
-            extraire_infos(qcm_path[0])
-            extraire_matr('.Temp/informations/matricule/matricule.jpg')
+            images_infos(qcm_path[0])
+            images_mtr('.temp/informations/matricule/matricule.jpg')
 
             # Ouvrir le dossier 'informations'
-            #os.startfile(".Temp\informations")
+            #os.startfile(".temp\informations")
             
     # Extraire les questions pour faciliter la facon d'extraire les reponses
     elif type == 1:
             # Tester si le dossier deja existe, sinon il va le creer
-            if(os.path.exists('.Temp/questions')==False):
-                os.mkdir('.Temp/questions')
+            if(os.path.exists('.temp/questions')==False):
+                os.mkdir('.temp/questions')
             
-            extraire_questions(qcm_path[0])
-            extraire_questions(qcm_path[1])
+            images_qsts(qcm_path[0])
+            images_qsts(qcm_path[1])
 
-            depuis_questions(nbr_questions(qcm_path[0]) + nbr_questions(qcm_path[1]))
+            extraire_rpns_qsts(calculer_qsts(qcm_path[0]) + calculer_qsts(qcm_path[1]))
 
             # Supprimer le dossier 'questions'
-            shutil.rmtree('.Temp/questions', ignore_errors=True)
+            shutil.rmtree('.temp/questions', ignore_errors=True)
     
             # Ouvrir le dossier 'reponses'
-            #os.startfile(".Temp\reponses")
+            #os.startfile(".temp\reponses")
             
     print("L'extraction est termine avec success!")
     
@@ -633,7 +580,7 @@ def afficher(type):
     if type == 0:
         afficher_infos()
     elif type == 1:
-        afficher_reponses(nbr_questions(qcm_path[0]) + nbr_questions(qcm_path[1]))
+        afficher_reponses(calculer_qsts(qcm_path[0]) + calculer_qsts(qcm_path[1]))
 
 # Fonction 20 : importer un fichier pdf
 def importerpdf():
@@ -657,48 +604,154 @@ def transforerenimg(pdffile):
         count += 1
         
     # Tester si le dossier deja existe, sinon il va le creer
-    if(os.path.exists('.Temp')==False):
-        os.mkdir('.Temp')   
+    if(os.path.exists('.temp')==False):
+        os.mkdir('.temp')   
         
     for i in range(count):
-        val = f".Temp/page{i+1}.jpg"
+        val = f".temp/page{i+1}.jpg"
         page = doc.load_page(i)
         pix = page.get_pixmap(matrix=mat)
         pix.save(val)
     doc.close()
+
+# Fonction 22 : extraire les informations depuis tous les qcms des etudiants qui existe
+#               dans le dossier 'Etudiants'
+
+def extraire_etudiants():
+    lst = os.listdir('Etudiants/')
+
+    for i in range(len(lst)):
+
+        if '.pdf' not in lst[i]:
+            continue
+        else:
+            transforerenimg('Etudiants/'+lst[i])
+            
+        print(f"\t\t====== Etudiant {i+1} ======")
+        extraire(0)
+        os.system('cls')
+        extraire(1)
+        os.system('cls')
+        
+        afficher(0)
+        afficher(1)
+
+# Fonction 23 : tester si l'image est inversee
+#           Retourner True : si l'image est inversee
+#           Retourner False : si l'image n'est pas inversee
+def est_inversee(img_path):
+    # Declarer un tableau
+    tableau = np.full(24,'')
+    
+    # Lire l'image
+    image = cv2.imread(img_path)
+    image = cv2.resize(image, (2481, 3508))
+
+    # Changer les couleurs de l'image
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY_INV)[1]
+    cnts,hierarchy = cv2.findContours(thresh, 1, 2)
+    cnts, _ = contours.sort_contours(cnts, "left-to-right")
+
+    for cnt in cnts:
+       x1,y1 = cnt[0][0]
+       approx = cv2.approxPolyDP(cnt, 0.01*cv2.arcLength(cnt, True), True)
+       if len(approx):
+            x, y, w, h = cv2.boundingRect(cnt)
+            
+            if (h >= 150 and h <= 160) and (w >= 635 and w <= 645):
+                # Selectioner la case
+                image = image[y:y+h, x:x+w]
+                
+                x, y, h, w = (105, 55, 38, 376)
+                
+                selected = image[y:y+h, x:x+w]
+                selected = cv2.resize(selected, (w*5, h*5))
+
+                # Rendre l'image plus lisable
+                selected = haute_qualite(selected)
+        
+                data = pytesseract.image_to_string(selected)
+                data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
+                tableau = data
+
+                break
+
+    if tableau == 'unecasemaximumparligne':
+        return False
+    else:
+        return True
+
+# Fonction 24 : Reverser l'image
+def inverser_image(img_path):
+    img = cv2.imread(img_path)
+    
+    if est_inversee(img_path) == True:
+        img = cv2.flip(img, -1)
+
+    return img
     
 # =============================================
 # Menu :
 # =============================================
 
-def menu():
+def menu1():
+    # Supprimer le dossier '.temp' et son contenu
+    shutil.rmtree('.temp', ignore_errors=True)
+    
     # Nettoyer le console
     os.system('cls')
         
     # Afficher le menu
-    print("> Menu :")
+    print("> Menu : 1/2\nExtraire les infomations et les reponses...")
+    
+    print("[1] De tous les etudiants")
+    print("[2] D'un etudiant precis")
+
+    print("\n[0] Quitter")
+    
+    print("\n\tChoisir une option : ", end="")
+    cle = input()
+    choix1(cle)  
+
+def choix1(opt):
+    if opt == '1':
+        extraire_etudiants()                    
+    elif opt == '2':
+        # Aller vers le deuxieme menu
+        menu2()
+    elif opt == '0': quit()                
+    else: menu()   
+            
+def menu2():
+    # Nettoyer le console
+    os.system('cls')
+        
+    # Afficher le menu
+    print("> Menu : 2/2")
     
     if pdf_path != '':
         print("[1] Extraire les informations")
         print("[2] Extraire les reponses")
         
-        if(os.path.exists('.Temp/informations')):
+        if(os.path.exists('.temp/informations')):
             print("[3] Afficher les informations")
 
-        if(os.path.exists('.Temp/reponses')):
+        if(os.path.exists('.temp/reponses')):
             print("[4] Afficher les reponses")
 
         print("\n[5] Faire tous les options")    
     else:
         print("[1] Importer le qcm en pdf")
 
-    print("\n[0] Quitter")
+    print("\n[9] Retourner")
+    print("[0] Quitter")
     
     print("\n\tChoisir une option : ", end="")
     cle = input()
-    choix(cle)
+    choix2(cle)
         
-def choix(opt):
+def choix2(opt):
     if pdf_path != '':
         if opt == '1':      
             # Extraire les questions depuis les deux templates du qcm
@@ -712,7 +765,7 @@ def choix(opt):
                     
             # Revenir au menu
             menu()
-        elif opt == '3' and os.path.exists('.Temp/informations'):
+        elif opt == '3' and os.path.exists('.temp/informations'):
             # Afficher les informations d'etudiant
             afficher(0)
             
@@ -722,7 +775,7 @@ def choix(opt):
             
             if key == 'R' or key == 'r': menu()
             
-        elif opt == '4' and os.path.exists('.Temp/reponses'):
+        elif opt == '4' and os.path.exists('.temp/reponses'):
             # Afficher les reponses d'etudiant
             afficher(1)
                 
@@ -734,21 +787,21 @@ def choix(opt):
 
         elif opt == '5':
             extraire(0)
+            os.system('cls')
             extraire(1)
-
             os.system('cls')
             
             afficher(0)
-            print()
             afficher(1)
 
-            # Supprimer le dossier '.Temp'
-            shutil.rmtree('.Temp', ignore_errors=True)
+            # Supprimer le dossier '.temp'
+            shutil.rmtree('.temp', ignore_errors=True)
             
             print("\n\n\tEntrez 'Q' ou 'q' pour quitter le programme : ", end="")
             key = input()
 
             if key == 'Q' or key == 'q': quit()
+        elif opt == '9': menu1()
         elif opt == '0': quit()                
         else: menu()   
     else:
@@ -760,7 +813,8 @@ def choix(opt):
             transforerenimg(pdf_path)
             
             # Revenir au menu
-            menu()     
+            menu()
+        elif opt == '9': menu1()
         elif opt == '0': quit()                
         else: menu()        
 
@@ -768,23 +822,13 @@ def choix(opt):
 # Main Programme :
 # =============================================
 
-# Supprimer le dossier '.Temp' et son contenu
-#shutil.rmtree('.Temp', ignore_errors=True)
-
 # Afficher le menu
-#menu()
+menu1()
 
 # ============================================
 # Fonctions a utilisees
 # ============================================
 
-# Etape 1
-def entrer_pdf(pathpdf):
-    transforerenimg(pathpdf)
-    extraire(0)
-    extraire(1)
-
-# Etape 2
 def returner_lesreponses(nbr_ques):
     print("Entrain de traiter, s'il vous plait attender quelques secondes...")
     questions = np.full(nbr_ques, '')
@@ -810,15 +854,20 @@ def returner_lesreponses(nbr_ques):
                 elif d == 1: r2[i] = data
                 
         # Tester la reponse qui se trouve dans le tableau puis l'afficher
-        if trouver_reponse(r1, r2) == '': questions[q] = 0
-        else: questions[q] = trouver_reponse(r1, r2)
+        # Tester la reponse qui se trouve dans le tableau puis l'afficher
+        if trouver_reponse(r1, r2) == '':
+            questions[q] = 'V'
+        else:  
+            if trouver_reponse(r1, r2) == -1:
+                questions[q] = 'E'
+            else:
+                questions[q] = trouver_reponse(r1, r2)
        
     # Supprimer les dossiers 'reponses'
     shutil.rmtree('reponses', ignore_errors=True)
 
     return questions
 
-# Etape 3
 def retourner_lesinfos():
     print("Entrain de traiter, s'il vous plait attender quelques secondes...")
     infos = np.full((4, 31), '')
@@ -850,7 +899,7 @@ def retourner_lesinfos():
                 date_eva[j] = data
                 
     # Pour tester
-    matricule = lire_contenu_matr()
+    matricule = extraire_matr()
 
     infos[0] = tab2str(date_eva)
     infos[1] = tab2str(nom_prenom).rstrip()
@@ -862,7 +911,32 @@ def retourner_lesinfos():
 
     return infos
 
-# Etape 4
 def supprimer_tempfile():
     # Supprimer le dossier '.Temp'
     shutil.rmtree('.Temp', ignore_errors=True)
+
+# Faire tous les taches
+def faire_tous(chemin_du_qcmpdf):
+    transforerenimg(chemin_du_qcmpdf)
+    extraire(0)
+    extraire(1)
+    
+    tableau_infos = retourner_lesinfos()
+    tableau_reponses = returner_lesreponses()
+	
+    print(tableau_infos)
+    print(tableau_reponses)
+
+    supprimer_tempfile()
+
+    f = open("depuis qcm.php", "a")
+    f.write("<php>\n")
+    f.write(f"$tableau_infos = {tableau_infos}\n")
+    f.write(f"$tableau_reponses = {tableau_reponses}\n")
+    f.write("</php>")
+    f.close()
+
+# Fonction qui s'execute
+#faire_tous("Etduants/e1")
+
+    
