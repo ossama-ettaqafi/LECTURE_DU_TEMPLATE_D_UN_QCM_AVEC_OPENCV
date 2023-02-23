@@ -77,15 +77,15 @@ def setrouve(val, tab):
 
     return existe
 
-# Fonction 3 : calculer le nombre des fichiers qui ce trouvent dans un dossier
-def nbr_fichier(path_dossier):
+# Fonction 3 : calculer le nombre des fichiers et des dossiers qui se trouvent dans un dossier
+def count_fd(path_dossier):
     # Lister les fichiers qui se trouvent dans un dossier du path 'path_dossier'
     lst = os.listdir(path_dossier)
 
     # Calculer la taille de la liste
-    nbr_fichiers = len(lst)
+    count_fds = len(lst)
     
-    return nbr_fichiers
+    return count_fds
 
 # Fonction 4 : permet de transformer un tableau en chaine de caracteres et l'inverser
 def tab2str(tableau):
@@ -151,8 +151,7 @@ def images_qsts(img_path):
                 selected = cv2.resize(selected, (w*6,h*6))
                             
                 # Selectioner le nombre de la question
-                qx=0 
-                qy=360
+                (qx, qy) = (0, 360)
                 ques_num = selected[qy:qy+270, qx:qx+398]
                 
                 # Rendre l'image plus lisable
@@ -184,17 +183,16 @@ def images_rpns(qst_path, nbr_quest):
         if len(approx):
             x, y, w, h = cv2.boundingRect(cnt)
 
-            if (h >= 40 and h <= 46) and (w >= 55 and w <= 65):
+            if (h==35 or h==36) and (w==52 or w==53 or w==54):
                 # Selectioner seulement le chiffre qui existe dans l'image du choix d'une question
-                x, y, h, w = (x + 15, y + 6, h - 11, w - 28)
-
+                x, y, h, w = (x + 15, y + 1, h - 2, w - 28)
                 selected = img[y:y+h, x:x+w]
-                selected = cv2.resize(selected, (460, 550))
+                selected = cv2.resize(selected, (w*5, h*5))
 
                 # Ameliorer la qualite de l'image
                 kernel = np.ones((5, 5), np.uint8)
                 selected = cv2.erode(selected, kernel, iterations=1)
-                selected = haute_qualite(selected)
+                #selected = haute_qualite(selected)
 
                 if 160 <= y and y <= 170: ch = '2'
                 else: ch = '1'
@@ -281,7 +279,7 @@ def afficher_reponses(nbr_ques):
     for q in range(nbr_ques):
         for d in range(2):
             dossier = '.temp/reponses/'+str(q+1)+'/{}/'.format(d+1)
-            nf = nbr_fichier(dossier)
+            nf = count_fd(dossier)
             
             # Declaration d'un tableau de (nf) cases
             if d == 0: r1 = np.full(nf, '')
@@ -466,7 +464,7 @@ def extraire_matr():
                     nf = 1
                 else:
                     dossier = '.temp/informations/matricule/'+str(i)+'/'
-                    nf = nbr_fichier(dossier)
+                    nf = count_fd(dossier)
             
                 for j in range(nf):
                         im_num = im_num + 1
@@ -754,13 +752,13 @@ def menu2():
 def choix2(opt):
     if pdf_path != '':
         if opt == '1':      
-            # Extraire les questions depuis les deux templates du qcm
+            # Extraire les questions depuis le premier template du 1er page du qcm
             extraire(0)
                     
             # Revenir au menu
             menu()                      
         elif opt == '2':
-            # Extraire les questions depuis les deux templates du qcm
+            # Extraire les questions depuis la deuxieme template du 1er page du qcm
             extraire(1)
                     
             # Revenir au menu
@@ -836,7 +834,7 @@ def retourner_lesreponses(nbr_ques):
     for q in range(nbr_ques):
         for d in range(2):
             dossier = '.Temp/reponses/'+str(q+1)+'/{}/'.format(d+1)
-            nf = nbr_fichier(dossier)
+            nf = count_fd(dossier)
             
             # Declaration d'un tableau de (nf) cases
             if d == 0: r1 = np.full(nf, '')
@@ -853,7 +851,6 @@ def retourner_lesreponses(nbr_ques):
                 if d == 0: r1[i] = data
                 elif d == 1: r2[i] = data
                 
-        # Tester la reponse qui se trouve dans le tableau puis l'afficher
         # Tester la reponse qui se trouve dans le tableau puis l'afficher
         if trouver_reponse(r1, r2) == '':
             questions[q] = 'V'
@@ -916,24 +913,37 @@ def supprimer_tempfile():
     shutil.rmtree('.Temp', ignore_errors=True)
 
 # Faire tous les taches
-def faire_tous(chemin_du_qcmpdf):
-    transforerenimg(chemin_du_qcmpdf)
-    extraire(0)
-    extraire(1)
-	
-    print(retourner_lesinfos())
-    print(retourner_lesreponses())
-
+def faire_tous():
     supprimer_tempfile()
 
-    f = open("depuis qcm.php", "a")
-    f.write("<php>\n")
-    f.write(f"$tableau_infos = {retourner_lesinfos()}\n")
-    f.write(f"$tableau_reponses = {retourner_lesreponses()}\n")
-    f.write("</php>")
+    lst = os.listdir('Etudiants/')
+    count = 0
+    f = open("depuis_qcm.php", "a")
+    f.write("<?php\n")
+    
+    for i in range(len(lst)):
+        if '.pdf' not in lst[i]:
+            continue
+        else:
+            transforerenimg('Etudiants/'+lst[i])
+        
+        extraire(0)
+        os.system('cls')
+        extraire(1)
+        os.system('cls')
+
+        nb = count_fd('.temp/reponses')
+        print(retourner_lesinfos())
+        print(retourner_lesreponses(nb))
+
+        f.write(f"$tableau_infos[{count}] = {retourner_lesinfos()}\n".replace('\n', '').replace('][', '],['))
+        f.write(f"$tableau_reponses[{count}] = {retourner_lesreponses(nb)}\n".replace('\n', '').replace('][', '],['))
+
+        count += 1
+
+    f.write("?>")
     f.close()
+    supprimer_tempfile()
 
 # Fonction qui s'execute
-faire_tous("Etudiants/e1.pdf")
-
-    
+faire_tous()    
