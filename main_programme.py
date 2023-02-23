@@ -7,7 +7,7 @@
         traiter ce qcm, donc tous les tailles et les positions
         dependent a ce dernier)
 
-        la lecture de l'image peut prend le .temps seulent le
+        la lecture de l'image peut prend le temps seulent le
         pytesseract {il faut l'installer dans votre PC et preciser
         le chemin "D:\Program Files\Tesseract-OCR\tesseract.exe")
         
@@ -186,10 +186,10 @@ def images_rpns(qst_path, nbr_quest):
 
             if (h >= 40 and h <= 46) and (w >= 55 and w <= 65):
                 # Selectioner seulement le chiffre qui existe dans l'image du choix d'une question
-                x, y, h, w = (x + 15, y + 6, h - 11, w - 28)
+                x, y, h, w = (x + 15, y + 5, h - 11, w - 28)
 
                 selected = img[y:y+h, x:x+w]
-                selected = cv2.resize(selected, (440, 520))
+                selected = cv2.resize(selected, (440, 550))
 
                 # Ameliorer la qualite de l'image
                 #selected = haute_qualite(selected)
