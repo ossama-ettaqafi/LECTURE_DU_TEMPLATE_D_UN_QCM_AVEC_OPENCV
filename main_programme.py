@@ -186,15 +186,15 @@ def images_rpns(qst_path, nbr_quest):
 
             if (h >= 40 and h <= 46) and (w >= 55 and w <= 65):
                 # Selectioner seulement le chiffre qui existe dans l'image du choix d'une question
-                x, y, h, w = (x + 15, y + 7, h - 13, w - 28)
+                x, y, h, w = (x + 15, y + 6, h - 11, w - 28)
 
                 selected = img[y:y+h, x:x+w]
-                selected = cv2.resize(selected, (440, 550))
+                selected = cv2.resize(selected, (460, 550))
 
                 # Ameliorer la qualite de l'image
-                #selected = haute_qualite(selected)
                 kernel = np.ones((5, 5), np.uint8)
-                img_erosion = cv2.erode(img, kernel, iterations=1)
+                selected = cv2.erode(selected, kernel, iterations=1)
+                selected = haute_qualite(selected)
 
                 if 160 <= y and y <= 170: ch = '2'
                 else: ch = '1'
@@ -823,13 +823,13 @@ def choix2(opt):
 # =============================================
 
 # Afficher le menu
-menu1()
+#menu1()
 
 # ============================================
 # Fonctions a utilisees
 # ============================================
 
-def returner_lesreponses(nbr_ques):
+def retourner_lesreponses(nbr_ques):
     print("Entrain de traiter, s'il vous plait attender quelques secondes...")
     questions = np.full(nbr_ques, '')
     
@@ -920,23 +920,20 @@ def faire_tous(chemin_du_qcmpdf):
     transforerenimg(chemin_du_qcmpdf)
     extraire(0)
     extraire(1)
-    
-    tableau_infos = retourner_lesinfos()
-    tableau_reponses = returner_lesreponses()
 	
-    print(tableau_infos)
-    print(tableau_reponses)
+    print(retourner_lesinfos())
+    print(retourner_lesreponses())
 
     supprimer_tempfile()
 
     f = open("depuis qcm.php", "a")
     f.write("<php>\n")
-    f.write(f"$tableau_infos = {tableau_infos}\n")
-    f.write(f"$tableau_reponses = {tableau_reponses}\n")
+    f.write(f"$tableau_infos = {retourner_lesinfos()}\n")
+    f.write(f"$tableau_reponses = {retourner_lesreponses()}\n")
     f.write("</php>")
     f.close()
 
 # Fonction qui s'execute
-#faire_tous("Etudiants/e1")
+faire_tous("Etudiants/e1.pdf")
 
     
