@@ -15,7 +15,7 @@
 
         Ce programme est devloppe par OSSAMA ETTAQAFI , en 2023
         Contact : ossamaett2002@gmail.com
-        Version : 1.0.0
+        Version : 2.0
         
 '''
 
@@ -96,7 +96,7 @@ def tab2str(tableau):
         else:
             string = string + tableau[i]
 
-    return string[::-1]
+    return string
 
 # Fonction 5 : calculer le nombre des questions dans un qcm du path donne
 def calculer_qsts(img_path):
@@ -318,9 +318,8 @@ def images_infos(img_path):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY_INV)[1]
     cnts,hierarchy = cv2.findContours(thresh, 1, 2)
-    cnts, _ = contours.sort_contours(cnts, "top-to-bottom")
+    cnts, _ = contours.sort_contours(cnts, "left-to-right")
     
-    num = 1
     i = 0
     for cnt in cnts:
        x1,y1 = cnt[0][0]
@@ -341,15 +340,13 @@ def images_infos(img_path):
                 cv2.imwrite('.temp/informations/matricule/matricule.jpg', selected)
                 
             if (h>=50 and h<=60) and (w>=30 and w<=40):
-                if num > 31:
-                    num = 1
-                        
-                # Selectioner la case
-                selected = image[y:y+h, x:x+w]
-                selected = cv2.resize(selected, (w*5, h*5))
+                '''
+                print(f"y = {y}")
 
-                # Rendre l'image plus lisable
-                selected = haute_qualite(selected)
+                cv2.rectangle(image, (x, y), (x + w, y + h), (36,255,12), 2)
+                cv2.imshow('image', image)
+                cv2.waitKey(0)
+                '''
                 
                 # Extraire l'image des caracteres : nom/prenom et cours/section
                 if (y>=170 and y<=185) or (y>=235 and y<=250):          
@@ -361,13 +358,21 @@ def images_infos(img_path):
                     i = 2
 
                 # Tester si les dossier deja existent, sinon il va les crees
-                if(os.path.exists('.temp/informations/'+dossier[i])==False):
-                    os.mkdir('.temp/informations/'+dossier[i])
-    
+                for j in range(3):
+                    if(os.path.exists('.temp/informations/'+dossier[j])==False):
+                        os.mkdir('.temp/informations/'+dossier[j])
+
+                num = count_fd('.temp/informations/'+dossier[i]) + 1
+                
+                # Selectioner la case
+                selected = image[y:y+h, x:x+w]
+                selected = cv2.resize(selected, (w*5, h*5))
+
+                # Rendre l'image plus lisable
+                selected = haute_qualite(selected)
+                    
                 # Sauvegarder les images dans des dossiers specifiques           
                 cv2.imwrite('.temp/informations/'+dossier[i]+'/{}.jpg'.format(num), selected)
-
-                num = num + 1
 
 # Fonction 13 : permet d'extraire les zones a remplir qui se trouve dans l'image du matricule
 def images_mtr(matr_path):
@@ -493,7 +498,7 @@ def extraire_matr():
                     tab = completer_trier(chiffre)                 
                     matricule[i] = nombre_masque(tab)
 
-        return tab2str(matricule)[::-1]
+        return tab2str(matricule)
 
 # Fonction 17 : permet d'extraire les informations depuis le qcm
 def afficher_infos():
@@ -557,11 +562,14 @@ def extraire(type):
             # Tester si le dossier deja existe, sinon il va le creer
             if(os.path.exists('.temp/questions')==False):
                 os.mkdir('.temp/questions')
-            
-            images_qsts(qcm_path[0])
-            images_qsts(qcm_path[1])
 
-            extraire_rpns_qsts(calculer_qsts(qcm_path[0]) + calculer_qsts(qcm_path[1]))
+            if nbr_pages(pdf_path) == 1:
+                images_qsts(qcm_path[0])
+                extraire_rpns_qsts(calculer_qsts(qcm_path[0]))
+            elif nbr_pages(pdf_path) == 2:   
+                images_qsts(qcm_path[0])
+                images_qsts(qcm_path[1])
+                extraire_rpns_qsts(calculer_qsts(qcm_path[0]) + calculer_qsts(qcm_path[1]))
 
             # Supprimer le dossier 'questions'
             shutil.rmtree('.temp/questions', ignore_errors=True)
@@ -609,7 +617,8 @@ def transforerenimg(pdffile):
         val = f".temp/page{i+1}.jpg"
         page = doc.load_page(i)
         pix = page.get_pixmap(matrix=mat)
-        pix.save(val)
+        pix.save(val
+                 )
     doc.close()
 
 # Fonction 22 : extraire les informations depuis tous les qcms des etudiants qui existe
@@ -623,7 +632,9 @@ def extraire_etudiants():
         if '.pdf' not in lst[i]:
             continue
         else:
-            transforerenimg('Etudiants/'+lst[i])
+            global pdf_path
+            pdf_path = 'Etudiants/'+lst[i]
+            transforerenimg(pdf_path)
             
         print(f"\t\t====== Etudiant {i+1} ======")
         extraire(0)
@@ -688,7 +699,17 @@ def inverser_image(img_path):
         img = cv2.flip(img, -1)
 
     return img
+
+# Fonction 25 : Calculer le nombre des pages dans un pdf
+def nbr_pages(pdffile):
+    doc = fitz.open(pdffile)
+    count = 0
     
+    for p in doc:
+        count += 1
+
+    return count
+
 # =============================================
 # Menu :
 # =============================================
@@ -719,7 +740,7 @@ def choix1(opt):
         # Aller vers le deuxieme menu
         menu2()
     elif opt == '0': quit()                
-    else: menu()   
+    else: menu1()   
             
 def menu2():
     # Nettoyer le console
@@ -756,13 +777,13 @@ def choix2(opt):
             extraire(0)
                     
             # Revenir au menu
-            menu()                      
+            menu2()                      
         elif opt == '2':
             # Extraire les questions depuis la deuxieme template du 1er page du qcm
             extraire(1)
                     
             # Revenir au menu
-            menu()
+            menu2()
         elif opt == '3' and os.path.exists('.temp/informations'):
             # Afficher les informations d'etudiant
             afficher(0)
@@ -801,7 +822,7 @@ def choix2(opt):
             if key == 'Q' or key == 'q': quit()
         elif opt == '9': menu1()
         elif opt == '0': quit()                
-        else: menu()   
+        else: menu2()   
     else:
         if opt == '1':      
             # Importer le pdf du qcm d'etudiant
@@ -811,11 +832,11 @@ def choix2(opt):
             transforerenimg(pdf_path)
             
             # Revenir au menu
-            menu()
+            menu2()
         elif opt == '9': menu1()
         elif opt == '0': quit()                
-        else: menu()        
-
+        else: menu2()
+        
 # =============================================
 # Main Programme :
 # =============================================
@@ -863,7 +884,7 @@ def retourner_lesreponses(nbr_ques):
     # Supprimer les dossiers 'reponses'
     shutil.rmtree('reponses', ignore_errors=True)
 
-    return questions
+    return questions[::-1]
 
 def retourner_lesinfos():
     print("Entrain de traiter, s'il vous plait attender quelques secondes...")
@@ -876,11 +897,14 @@ def retourner_lesinfos():
             
         for j in r:         
             # Lire l'image
-            img = cv2.imread('.Temp/informations/' + dossier[i] + '/{}.jpg'.format(j+1))
+            img = cv2.imread('.temp/informations/' + dossier[i] + '/{}.jpg'.format(j+1))
             img = cv2.resize(img, (200, 400))
 
             w, h, x, y = (148, 350, 23, 30)       
             img = img[y:y+h, x:x+w]
+
+            cv2.imshow("ss", img)
+            cv2.waitKey(0)
                 
             # Extraire le texte depuis l'image
             if i == 0 or i == 1:
@@ -920,15 +944,17 @@ def faire_tous():
         if '.pdf' not in lst[i]:
             continue
         else:
-            transforerenimg('Etudiants/'+lst[i])
-        
+            global pdf_path
+            pdf_path = 'Etudiants/'+lst[i]
+            transforerenimg(pdf_path)
+
         extraire(0)
         os.system('cls')
         extraire(1)
         os.system('cls')
 
         info = retourner_lesinfos()
-
+        
         nb = count_fd('.temp/reponses')
         reponses = tab2str(retourner_lesreponses(nb))
         
