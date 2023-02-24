@@ -924,7 +924,7 @@ def faire_tous():
         
         extraire(0)
         os.system('cls')
-        extraire(1)
+        #extraire(1)
         os.system('cls')
 
         info = retourner_lesinfos()
@@ -932,10 +932,10 @@ def faire_tous():
         nb = count_fd('.temp/reponses')
         reponses = tab2str(retourner_lesreponses(nb))
         
-        f.write("$date["+str(count)+"] = "+info[0]+"\n")
-        f.write("$nom_pre["+str(count)+"] = "+info[1]+"\n")
-        f.write("$cours_sec["+str(count)+"] = "+info[2]+"\n")
-        f.write("$matr["+str(count)+"] = "+info[3]+"\n")     
+        f.write("$date["+str(count)+"] = '"+info[0]+"'\n")
+        f.write("$nom_pre["+str(count)+"] = '"+info[1]+"'\n")
+        f.write("$cours_sec["+str(count)+"] = '"+info[2]+"'\n")
+        f.write("$matr["+str(count)+"] = '"+info[3]+"'\n")     
         f.write("$reponses["+str(count)+"] = '"+reponses+"'\n")
 
         count += 1
