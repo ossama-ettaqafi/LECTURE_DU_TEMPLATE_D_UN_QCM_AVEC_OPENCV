@@ -578,7 +578,10 @@ def afficher(type):
     if type == 0:
         afficher_infos()
     elif type == 1:
-        afficher_reponses(calculer_qsts(qcm_path[0]) + calculer_qsts(qcm_path[1]))
+        if nbr_pages(pdf_path) == 1:
+            afficher_reponses(calculer_qsts(qcm_path[0]))
+        elif nbr_pages(pdf_path) == 2:   
+            afficher_reponses(calculer_qsts(qcm_path[0]) + calculer_qsts(qcm_path[1]))
 
 # Fonction 20 : importer un fichier pdf
 def importerpdf():
@@ -834,7 +837,7 @@ def choix2(opt):
 # =============================================
 
 # Afficher le menu
-#menu1()
+menu1()
 
 # ============================================
 # Fonctions a utilisees
@@ -954,10 +957,10 @@ def faire_tous():
         f.write("$reponses["+str(count)+"] = '"+reponses+"'\n")
 
         count += 1
+        supprimer_tempfile()
 
     f.write("?>")
     f.close()
-    supprimer_tempfile()
 
 # Fonction qui s'execute
-faire_tous()    
+#faire_tous()    
