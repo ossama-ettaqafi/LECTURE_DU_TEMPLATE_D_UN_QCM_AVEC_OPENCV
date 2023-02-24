@@ -525,7 +525,7 @@ def afficher_infos():
                 data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
                 date_eva[j] = data
                 
-    # Pour tester
+    # Pour afficher
     matricule = extraire_matr()
     print("[ Date de l'evaluation : " + tab2str(date_eva)+ " ]")
     print("[ Nom et prenom : " + tab2str(nom_prenom).rstrip() + " ]")
@@ -867,7 +867,6 @@ def retourner_lesreponses(nbr_ques):
 
 def retourner_lesinfos():
     print("Entrain de traiter, s'il vous plait attender quelques secondes...")
-    infos = np.full((4, 31), '')
     
     for i in range(3):
         if i == 0 or i == 1:
@@ -895,18 +894,14 @@ def retourner_lesinfos():
                 data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
                 date_eva[j] = data
                 
-    # Pour tester
     matricule = extraire_matr()
 
-    infos[0] = tab2str(date_eva)
-    infos[1] = tab2str(nom_prenom).rstrip()
-    infos[2] = matricule
-    infos[3] = tab2str(cours_sec).rstrip()
+    tableau = list((tab2str(date_eva), tab2str(nom_prenom).rstrip(), tab2str(cours_sec).rstrip(), matricule))
 
     # Supprimer le dossier 'informations'
-    shutil.rmtree('.Temp/informations', ignore_errors=True)
-
-    return infos
+    shutil.rmtree('.temp/informations', ignore_errors=True)
+    
+    return tableau
 
 def supprimer_tempfile():
     # Supprimer le dossier '.Temp'
@@ -918,7 +913,7 @@ def faire_tous():
 
     lst = os.listdir('Etudiants/')
     count = 0
-    f = open("depuis_qcm.php", "a")
+    f = open("depuis_qcm.php", "w")
     f.write("<?php\n")
     
     for i in range(len(lst)):
@@ -929,15 +924,19 @@ def faire_tous():
         
         extraire(0)
         os.system('cls')
-        extraire(1)
+        #extraire(1)
         os.system('cls')
 
-        nb = count_fd('.temp/reponses')
-        print(retourner_lesinfos())
-        print(retourner_lesreponses(nb))
+        info = retourner_lesinfos()
 
-        f.write("$tableau_infos["+count+"] = "+retourner_lesinfos().replace('\n', '').replace('][', ',')+"\n")
-        f.write("$tableau_reponses["+count+"] = '"+tab2str(retourner_lesreponses(nb))+"'\n")
+        nb = count_fd('.temp/reponses')
+        reponses = tab2str(retourner_lesreponses(nb))
+        
+        f.write("$date["+str(count)+"] = "+info[0]+"\n")
+        f.write("$nom_pre["+str(count)+"] = "+info[1]+"\n")
+        f.write("$cours_sec["+str(count)+"] = "+info[2]+"\n")
+        f.write("$matr["+str(count)+"] = "+info[3]+"\n")     
+        f.write("$reponses["+str(count)+"] = '"+reponses+"'\n")
 
         count += 1
 
