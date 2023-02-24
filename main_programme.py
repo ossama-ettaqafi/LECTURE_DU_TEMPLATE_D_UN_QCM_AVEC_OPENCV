@@ -876,7 +876,7 @@ def retourner_lesreponses(nbr_ques):
     # Supprimer les dossiers 'reponses'
     shutil.rmtree('reponses', ignore_errors=True)
 
-    return questions[::-1]
+    return questions
 
 def retourner_lesinfos():
     print("Entrain de traiter, s'il vous plait attender quelques secondes...")
