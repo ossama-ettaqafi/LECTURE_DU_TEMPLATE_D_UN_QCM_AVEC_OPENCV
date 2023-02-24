@@ -837,7 +837,7 @@ def choix2(opt):
 # =============================================
 
 # Afficher le menu
-menu1()
+#menu1()
 
 # ============================================
 # Fonctions a utilisees
@@ -849,7 +849,7 @@ def retourner_lesreponses(nbr_ques):
     
     for q in range(nbr_ques):
         for d in range(2):
-            dossier = '.Temp/reponses/'+str(q+1)+'/{}/'.format(d+1)
+            dossier = '.temp/reponses/'+str(q+1)+'/{}/'.format(d+1)
             nf = count_fd(dossier)
             
             # Declaration d'un tableau de (nf) cases
@@ -920,8 +920,8 @@ def retourner_lesinfos():
     return tableau
 
 def supprimer_tempfile():
-    # Supprimer le dossier '.Temp'
-    shutil.rmtree('.Temp', ignore_errors=True)
+    # Supprimer le dossier '.temp'
+    shutil.rmtree('.temp', ignore_errors=True)
 
 # Faire tous les taches
 def faire_tous():
@@ -963,4 +963,4 @@ def faire_tous():
     f.close()
 
 # Fonction qui s'execute
-#faire_tous()    
+faire_tous()    
