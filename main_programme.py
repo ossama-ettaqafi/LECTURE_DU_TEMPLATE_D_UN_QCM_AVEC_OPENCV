@@ -339,15 +339,7 @@ def images_infos(img_path):
                 # Sauvegarder l'image dans le dossier 'matricule'           
                 cv2.imwrite('.temp/informations/matricule/matricule.jpg', selected)
                 
-            if (h>=50 and h<=60) and (w>=30 and w<=40):
-                '''
-                print(f"y = {y}")
-
-                cv2.rectangle(image, (x, y), (x + w, y + h), (36,255,12), 2)
-                cv2.imshow('image', image)
-                cv2.waitKey(0)
-                '''
-                
+            if (h>=50 and h<=60) and (w>=30 and w<=40):            
                 # Extraire l'image des caracteres : nom/prenom et cours/section
                 if (y>=170 and y<=185) or (y>=235 and y<=250):          
                     if y>=170 and y<=185: i = 0
@@ -902,10 +894,7 @@ def retourner_lesinfos():
 
             w, h, x, y = (148, 350, 23, 30)       
             img = img[y:y+h, x:x+w]
-
-            cv2.imshow("ss", img)
-            cv2.waitKey(0)
-                
+              
             # Extraire le texte depuis l'image
             if i == 0 or i == 1:
                 data = pytesseract.image_to_string(img, lang='eng', config='--psm 13 --oem 3 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ')
