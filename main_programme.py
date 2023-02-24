@@ -924,7 +924,7 @@ def faire_tous():
         
         extraire(0)
         os.system('cls')
-        #extraire(1)
+        extraire(1)
         os.system('cls')
 
         info = retourner_lesinfos()
