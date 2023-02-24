@@ -49,7 +49,11 @@ matricule = np.full(6, '')
 qcm_path = ['.temp/page1.jpg', '.temp/page2.jpg']
 pdf_path = ''
 
-# Fonction 1 : permet d'ameliorer la qualite d'une image
+# Fonction 1 : permet de supprimer le dossier '.temp'
+def supprimer_tempfile():
+    shutil.rmtree('.temp', ignore_errors=True)
+
+# Fonction 2 : permet d'ameliorer la qualite d'une image
 def haute_qualite(image):
     # Convertir l'image au mode grayscale et faire le blur a l'image
     gray_sele = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -711,7 +715,7 @@ def nbr_pages(pdffile):
 
 def menu1():
     # Supprimer le dossier '.temp' et son contenu
-    shutil.rmtree('.temp', ignore_errors=True)
+    supprimer_tempfile()
     
     # Nettoyer le console
     os.system('cls')
@@ -787,7 +791,7 @@ def choix2(opt):
             print("\n\n\tEntrez 'R' ou 'r' pour retourner au menu : ", end="")
             key = input()
             
-            if key == 'R' or key == 'r': menu()
+            if key == 'R' or key == 'r': menu2()
             
         elif opt == '4' and os.path.exists('.temp/reponses'):
             # Afficher les reponses d'etudiant
@@ -797,9 +801,12 @@ def choix2(opt):
             print("\n\n\tEntrez 'R' ou 'r' pour retourner au menu : ", end="")
             key = input()
             
-            if key == 'R' or key == 'r': menu()
+            if key == 'R' or key == 'r': menu2()
 
         elif opt == '5':
+            # Supprimer le dossier '.temp'
+            supprimer_tempfile()
+            
             extraire(0)
             os.system('cls')
             extraire(1)
@@ -809,7 +816,7 @@ def choix2(opt):
             afficher(1)
 
             # Supprimer le dossier '.temp'
-            shutil.rmtree('.temp', ignore_errors=True)
+            supprimer_tempfile()
             
             print("\n\n\tEntrez 'Q' ou 'q' pour quitter le programme : ", end="")
             key = input()
@@ -837,10 +844,10 @@ def choix2(opt):
 # =============================================
 
 # Afficher le menu
-#menu1()
+menu1()
 
 # ============================================
-# Fonctions a utilisees
+# Fonctions a utilisees pour l'application web
 # ============================================
 
 def retourner_lesreponses(nbr_ques):
@@ -919,10 +926,6 @@ def retourner_lesinfos():
     
     return tableau
 
-def supprimer_tempfile():
-    # Supprimer le dossier '.temp'
-    shutil.rmtree('.temp', ignore_errors=True)
-
 # Faire tous les taches
 def faire_tous():
     supprimer_tempfile()
@@ -963,4 +966,4 @@ def faire_tous():
     f.close()
 
 # Fonction qui s'execute
-faire_tous()    
+#faire_tous()    
