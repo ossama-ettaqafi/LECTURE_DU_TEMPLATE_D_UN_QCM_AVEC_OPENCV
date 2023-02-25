@@ -36,16 +36,8 @@ from imutils import contours
 
 pytesseract.pytesseract.tesseract_cmd = r"D:\Program Files\Tesseract-OCR\tesseract.exe"
 
-# Declaration des tableaux
-nom_prenom = np.full(31, '')
-cours_sec = np.full(31, '')
-date_eva = np.full(10, '')
-
+# Declaration des tableaux et des variables
 dossier = ['nom_prenom', 'cours_sec', 'date_eva']
-
-chiffre = np.full(10, '')
-matricule = np.full(6, '')
-
 qcm_path = ['.temp/page1.jpg', '.temp/page2.jpg']
 pdf_path = ''
 
@@ -457,6 +449,8 @@ def completer_trier(tab):
 
 # Fonction 16 : permet d'extraire le matricule depuis la premiere page du qcm
 def extraire_matr():
+        chiffre = np.full(10, '')
+    
         # Lire le contenu des images puis extraire le nombre masque dans l'image
         for i in range(6):
                 im_num = 0
@@ -500,6 +494,11 @@ def extraire_matr():
 def afficher_infos():
     print("\t> Les informations :")
     #print("Entrain de traiter, s'il vous plait attender quelques secondes...")
+    nom_prenom = np.full(31, '')
+    cours_sec = np.full(31, '')
+    date_eva = np.full(10, '')
+    matricule = np.full(6, '')
+    
     for i in range(3):
         if i == 0 or i == 1:
             r = range(31)
@@ -807,6 +806,8 @@ def choix2(opt):
             # Supprimer le dossier '.temp'
             supprimer_tempfile()
             
+            transforerenimg(pdf_path)
+            
             extraire(0)
             os.system('cls')
             extraire(1)
@@ -890,6 +891,11 @@ def retourner_lesreponses(nbr_ques):
 
 def retourner_lesinfos():
     print("Entrain de traiter, s'il vous plait attender quelques secondes...")
+
+    nom_prenom = np.full(31, '')
+    cours_sec = np.full(31, '')
+    date_eva = np.full(10, '')
+    matricule = np.full(6, '')
     
     for i in range(3):
         if i == 0 or i == 1:
