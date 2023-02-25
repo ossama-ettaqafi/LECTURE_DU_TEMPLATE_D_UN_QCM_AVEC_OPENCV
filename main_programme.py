@@ -450,6 +450,7 @@ def completer_trier(tab):
 # Fonction 16 : permet d'extraire le matricule depuis la premiere page du qcm
 def extraire_matr():
         chiffre = np.full(10, '')
+        matricule = np.full(6, '')
     
         # Lire le contenu des images puis extraire le nombre masque dans l'image
         for i in range(6):
