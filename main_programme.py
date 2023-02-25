@@ -498,6 +498,7 @@ def afficher_infos():
     nom_prenom = np.full(31, '')
     cours_sec = np.full(31, '')
     date_eva = np.full(10, '')
+    
     matricule = np.full(6, '')
     
     for i in range(3):
@@ -627,10 +628,12 @@ def extraire_etudiants():
     lst = os.listdir('Etudiants/')
 
     for i in range(len(lst)):
-
         if '.pdf' not in lst[i]:
             continue
         else:
+            # Supprimer le dossier '.temp' et son contenu
+            supprimer_tempfile()
+            
             global pdf_path
             pdf_path = 'Etudiants/'+lst[i]
             transforerenimg(pdf_path)
@@ -846,7 +849,7 @@ def choix2(opt):
 # =============================================
 
 # Afficher le menu
-menu1()
+#menu1()
 
 # ============================================
 # Fonctions a utilisees pour l'application web
@@ -896,6 +899,7 @@ def retourner_lesinfos():
     nom_prenom = np.full(31, '')
     cours_sec = np.full(31, '')
     date_eva = np.full(10, '')
+    
     matricule = np.full(6, '')
     
     for i in range(3):
@@ -946,6 +950,9 @@ def faire_tous():
         if '.pdf' not in lst[i]:
             continue
         else:
+            # Supprimer le dossier '.temp' et son contenu
+            supprimer_tempfile()
+            
             global pdf_path
             pdf_path = 'Etudiants/'+lst[i]
             transforerenimg(pdf_path)
