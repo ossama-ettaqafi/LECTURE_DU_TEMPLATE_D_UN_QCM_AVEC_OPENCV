@@ -966,12 +966,10 @@ def faire_tous():
         
         nb = count_fd('.temp/reponses')
         reponses = tab2str(retourner_lesreponses(nb))
+
         
-        f.write("$date["+str(count)+"] = '"+info[0]+"'\n")
-        f.write("$nom_pre["+str(count)+"] = '"+info[1]+"'\n")
-        f.write("$cours_sec["+str(count)+"] = '"+info[2]+"'\n")
-        f.write("$matr["+str(count)+"] = '"+info[3]+"'\n")     
-        f.write("$reponses["+str(count)+"] = '"+reponses+"'\n")
+        variable = "array('{}','{}','{}','{}','{}')".format(info[0],info[1],info[2],info[3],reponses)
+        f.write("$etudiant["+str(count)+"] = "+variable+"\n")
 
         count += 1
         supprimer_tempfile()
@@ -980,4 +978,4 @@ def faire_tous():
     f.close()
 
 # Fonction qui s'execute
-#faire_tous()    
+faire_tous()    
