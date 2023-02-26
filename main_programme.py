@@ -20,16 +20,15 @@
 '''
 
 # L'importation des modules
-import cv2
+import cv2                      #pip install opencv-python
 import time
 import os
 import os.path
 import pytesseract
 import numpy as np
 import shutil
-import fnmatch
 import tkinter as tk
-import fitz         # pip install PyMuPDF==1.16.14
+import fitz                     #pip install fitz et pip install PyMuPDF
 
 from tkinter import filedialog
 from imutils import contours
@@ -849,7 +848,7 @@ def choix2(opt):
 # =============================================
 
 # Afficher le menu
-#menu1()
+menu1()
 
 # ============================================
 # Fonctions a utilisees pour l'application web
@@ -978,4 +977,4 @@ def faire_tous():
     f.close()
 
 # Fonction qui s'execute
-faire_tous()    
+#faire_tous()    
