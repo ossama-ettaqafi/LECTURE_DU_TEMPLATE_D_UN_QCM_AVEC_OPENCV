@@ -27,7 +27,6 @@ import os.path
 import pytesseract
 import numpy as np
 import shutil
-import tkinter as tk
 import fitz                     #pip install fitz et pip install PyMuPDF
 
 from tkinter import filedialog
@@ -170,7 +169,7 @@ def images_rpns(qst_path, nbr_quest):
     # Changer les couleurs de l'image
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY_INV)[1]
-    contours,hierarchy = cv2.findContours(thresh, 1, 2)
+    contours, hierarchy = cv2.findContours(thresh, 1, 2)
 
     for cnt in contours:
         x1,y1 = cnt[0][0]
@@ -189,7 +188,7 @@ def images_rpns(qst_path, nbr_quest):
                 selected = cv2.erode(selected, kernel, iterations=1)
                 #selected = haute_qualite(selected)
 
-                if 160 <= y and y <= 170: ch = '2'
+                if 150 <= y and y <= 180: ch = '2'
                 else: ch = '1'
 
                 # Tester si les dossiers deja existent, sinon il va les crees
@@ -723,7 +722,7 @@ def menu1():
     os.system('cls')
         
     # Afficher le menu
-    print("> Menu : 1/2\nExtraire les infomations et les reponses...")
+    print("> Menu : 1/3\nExtraire les infomations et les reponses...")
     
     print("[1] De tous les etudiants")
     print("[2] D'un etudiant precis")
@@ -747,10 +746,9 @@ def menu2():
     # Nettoyer le console
     os.system('cls')
         
-    # Afficher le menu
-    print("> Menu : 2/2")
-    
+    # Afficher le menu    
     if pdf_path != '':
+        print("> Menu : 3/3")
         print("[1] Extraire les informations")
         print("[2] Extraire les reponses")
         
@@ -762,6 +760,7 @@ def menu2():
 
         print("\n[5] Faire tous les options")    
     else:
+        print("> Menu : 2/3")
         print("[1] Importer le qcm en pdf")
 
     print("\n[9] Retourner")
