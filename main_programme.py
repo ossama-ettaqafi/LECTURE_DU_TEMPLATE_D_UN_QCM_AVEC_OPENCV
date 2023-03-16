@@ -386,14 +386,6 @@ def afficher_reponses(nbr_ques):
     for row in resultats:
         print(f'| {str(row[0]).ljust(20)} | {str(row[1]).ljust(22)} |')
     print('+----------------------+------------------------+')
-
-    # Calcul de la largeur des colonnes
-    largeur_colonne_1 = max(len(ligne[0]) for ligne in tableau)
-    largeur_colonne_2 = max(len(ligne[1]) for ligne in tableau)
-
-    # Affichage du tableau
-    for ligne in tableau:
-        print("{:<{}}  {}".format(ligne[0], largeur_colonne_1, ligne[1]))
      
     # Supprimer les dossiers 'reponses'
     shutil.rmtree('.temp/reponses', ignore_errors=True)
@@ -608,9 +600,9 @@ def afficher_infos():
     
     # Créer une liste des informations à afficher
     informations = [
-        ['Date de l\'évaluation', tab2str(date_eva)],
+        ['Date de l\'évaluation', tab2str(date_eva).rstrip()],
         ['Nom et prénom', tab2str(nom_prenom).rstrip()],
-        ['Matricule', matricule],
+        ['Matricule', tab2str(matricule).rstrip()],
         ['Cours et section', tab2str(cours_sec).rstrip()]
     ]
 
@@ -621,14 +613,6 @@ def afficher_infos():
     for row in informations:
         print(f'| {str(row[0]).ljust(20)} | {str(row[1]).ljust(22)} |')
     print('+----------------------+------------------------+')
-
-    # Calcul de la largeur des colonnes
-    largeur_colonne_1 = max(len(ligne[0]) for ligne in tableau)
-    largeur_colonne_2 = max(len(ligne[1]) for ligne in tableau)
-
-    # Affichage du tableau
-    for ligne in tableau:
-        print("{:<{}}  {}".format(ligne[0], largeur_colonne_1, ligne[1]))
 
     # Supprimer le dossier 'informations'
     shutil.rmtree('.temp/informations', ignore_errors=True)
