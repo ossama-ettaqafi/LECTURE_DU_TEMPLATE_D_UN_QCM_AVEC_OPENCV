@@ -364,7 +364,7 @@ def afficher_reponses(nbr_ques):
                 
                 # Extraire le texte depuis l'image, seulement les caractères 12345AT
                 data = pytesseract.image_to_string(img, lang='eng', config='--psm 13 --oem 3 -c tessedit_char_whitelist=12345AT')
-                data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
+                data = data.replace('\n', '').replace('\r', '').replace(' ', '')
                  
                 if d == 0: r1[i] = data
                 elif d == 1: r2[i] = data
@@ -378,6 +378,8 @@ def afficher_reponses(nbr_ques):
             resultats.append([q+1, 'Réponse non acceptée'])
         else:
             resultats.append([q+1, reponse])
+
+        resultats = np.array(resultats)
 
     # Afficher le tableau des résultats
     print('+----------------------+------------------------+')
@@ -547,7 +549,7 @@ def extraire_matr():
 
                         # Extraire le texte depuis l'image, seulement les caracteres P0123456789
                         data = pytesseract.image_to_string(img, lang='eng', config='--psm 13 --oem 3 -c tessedit_char_whitelist=P0123456789')
-                        data = data.replace('\n', ' ').replace('\r', '').replace(' ', '')
+                        data = data.replace('\n', '').replace('\r', '').replace(' ', '')
                         if i == 0:
                             if data == '':
                                 matricule[0] = 'P'
@@ -905,9 +907,7 @@ def deuxieme_menu():
             print("3. Afficher les informations")
 
         if(os.path.exists('.temp/reponses')):
-            print("4. Afficher les réponses")
-
-        print("")
+            print("4. Afficher les réponses\n")
 
         print("5. Faire toutes les options\n")
     else:
