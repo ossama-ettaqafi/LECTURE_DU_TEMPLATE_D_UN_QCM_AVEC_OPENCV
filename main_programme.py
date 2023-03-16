@@ -324,7 +324,7 @@ def trouver_reponse(rep1, rep2):
     rep[1] = rep2
 
     fois = 0
-    reponse = ''
+    reponse = 0
 
     j = 1
     while j >= 0:
@@ -333,7 +333,7 @@ def trouver_reponse(rep1, rep2):
             if fois > 1:
                 return -1
             
-            if (tab[i] in rep[j]) == False : 
+            if tab[i] not in rep[j] : 
                 reponse = tab[i]
                 return reponse
                 fois += 1
@@ -353,6 +353,7 @@ def afficher_reponses(nbr_ques):
         for d in range(2):
             dossier = '.temp/reponses/'+str(q+1)+'/{}/'.format(d+1)
             nf = count_fd(dossier)
+            
             # Déclaration d'un tableau de (nf) cases
             if d == 0: r1 = np.full(nf, '')
             elif d == 1: r2 = np.full(nf, '')
@@ -368,11 +369,10 @@ def afficher_reponses(nbr_ques):
                 if d == 0: r1[i] = data
                 elif d == 1: r2[i] = data
             
-    # Tester la réponse qui se trouve dans le tableau puis l'afficher
-    resultats = []
-    for q in range(nbr_ques):
+        # Tester la réponse qui se trouve dans le tableau puis l'afficher
+        resultats = []
         reponse = trouver_reponse(r1, r2)
-        if reponse == '':
+        if reponse == 0:
             resultats.append([q+1, 'Aucune réponse'])
         elif reponse == -1:
             resultats.append([q+1, 'Réponse non acceptée'])
@@ -651,7 +651,7 @@ def extraire(type):
     t1 = time.time()
     
     # Calculer et retourner le temps d'exécution en secondes
-    return t1 - t0
+    return round(t1 - t0, 2)
   
 # Fonction 23 : permet d'afficher les données d'un QCM
     # type: 0 - les informations
@@ -677,7 +677,7 @@ def afficher(type):
     t1 = time.time()
     
     #Calculer et retourner le temps d'exécution en secondes
-    return t1 - t0
+    return round(t1 - t0, 2)
 
 # Fonction 24 : extraire les informations de tous les QCMs des étudiants qui existent dans le dossier 'Etudiants'
 def extraire_etudiants():
@@ -709,20 +709,20 @@ def extraire_etudiants():
         transformer_en_img('.temp', PDF_PATH)
         
         # Afficher le nom de l'étudiant
-        print(f"\t\t====== QCM : {filename} ======")
+        print(f"\t--------------- QCM : {filename} ---------------")
 
         # Calculer le temps d'exécution
         temps = 0
         
         # Extraire les informations pour chaque étudiant      
         temps += extraire(0) + extraire(1)
-        print(f"> Le temps d'extraction est : {temps}s\n")
+        print(f"> Le temps d'extraction est : {sec_en_min(temps)}\n")
 
         # Afficher les informations extraites
         temps = afficher(0)    
-        print(f"> Le temps d'affichage est : {temps}s\n")
+        print(f"> Le temps d'affichage est : {sec_en_min(temps)}\n")
         temps = afficher(1)    
-        print(f"> Le temps d'affichage est : {temps}s\n")
+        print(f"> Le temps d'affichage est : {sec_en_min(temps)}\n")
 
         
 # Fonction 25 : calculer le nombre des pages dans un PDF
@@ -843,6 +843,12 @@ def valeur_suivante(tableau, valeur_actuelle):
         # Sinon, retourner None
         return None
 
+# Fonction 28 : transformer les secondes en minutes
+def sec_en_min(secondes):
+    minutes = secondes // 60  # division entière pour obtenir le nombre de minutes
+    secondes_restantes = secondes % 60  # modulo pour obtenir les secondes restantes
+    return f"{int(round(minutes))}:{int(round(secondes_restantes))}min"
+
 # =============================================
 # Menus :
 # =============================================
@@ -874,7 +880,7 @@ def choix1(opt):
         # Calculer le temps d'exécution en secondes
         temps = t1 - t0
 
-        print(f"> Le temps d'exécution est : {temps}s\n")
+        print(f"> Le temps d'exécution est : {sec_en_min(temps)}\n")
     elif opt == 2:
         # Aller vers le deuxième menu
         deuxieme_menu()
@@ -931,7 +937,7 @@ def choix2(opt):
         elif opt == 3 and os.path.exists('.temp/informations'):
             # Temps d'affichage
             temps = (afficher(0))
-            print(f"> Le temps de traitement et d'affichage est : {temps}s\n")
+            print(f"> Le temps de traitement et d'affichage est : {sec_en_min(temps)}\n")
             
             # Revenir au menu
             print("\n\n\tEntrez 'R' ou 'r' pour retourner au menu : ", end="")
@@ -942,7 +948,7 @@ def choix2(opt):
         elif opt == 4 and os.path.exists('.temp/reponses'):
             # Temps d'affichage
             temps = afficher(1)
-            print(f"> Le temps de traitement et d'affichage est : {temps}s\n")
+            print(f"> Le temps de traitement et d'affichage est : {sec_en_min(temps)}\n")
               
             # Revenir au menu
             print("\n\n\tEntrez 'R' ou 'r' pour retourner au menu : ", end="")
@@ -960,7 +966,7 @@ def choix2(opt):
             temps = 0
             temps += extraire(0) + extraire(1)
             temps += afficher(0) + afficher(1)
-            print(f"> Le temps d'exécution est : {temps}s\n")
+            print(f"> Le temps d'exécution est : {sec_en_min(temps)}\n")
 
             # Supprimer le dossier '.temp'
             supprimer_tempfile()
