@@ -349,6 +349,7 @@ def trouver_reponse(rep1, rep2):
 
 # Fonction 15 : permet d'afficher les réponses d'étudiant depuis les images des réponses sauvegardées
 def afficher_reponses(nbr_ques):
+    resultats = []
     for q in range(nbr_ques):
         for d in range(2):
             dossier = '.temp/reponses/'+str(q+1)+'/{}/'.format(d+1)
@@ -370,7 +371,6 @@ def afficher_reponses(nbr_ques):
                 elif d == 1: r2[i] = data
             
         # Tester la réponse qui se trouve dans le tableau puis l'afficher
-        resultats = []
         reponse = trouver_reponse(r1, r2)
         if reponse == 0:
             resultats.append([q+1, 'Aucune réponse'])
@@ -378,8 +378,6 @@ def afficher_reponses(nbr_ques):
             resultats.append([q+1, 'Réponse non acceptée'])
         else:
             resultats.append([q+1, reponse])
-
-        resultats = np.array(resultats)
 
     # Afficher le tableau des résultats
     print('+----------------------+------------------------+')
@@ -582,7 +580,7 @@ def afficher_infos():
             img = cv2.imread('.temp/informations/' + dossiers[i] + '/{}.jpg'.format(j+1))
             img = cv2.resize(img, (200, 400))
 
-            w, h, x, y = (148, 350, 23, 30)       
+            w, h, x, y = (190, 350, 25, 10)       
             img = img[y:y+h, x:x+w]
                 
             # Extraire le texte depuis l'image
