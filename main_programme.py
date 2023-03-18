@@ -580,9 +580,9 @@ def afficher_infos():
             img = cv2.imread('.temp/informations/' + dossiers[i] + '/{}.jpg'.format(j+1))
             img = cv2.resize(img, (200, 400))
 
-            w, h, x, y = (190, 350, 25, 10)       
+            w, h, x, y = (175, 350, 16, 16)       
             img = img[y:y+h, x:x+w]
-                
+            
             # Extraire le texte depuis l'image
             if i == 0 or i == 1:
                 data = pytesseract.image_to_string(img, lang='eng', config='--psm 13 --oem 3 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ')
