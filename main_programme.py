@@ -577,12 +577,11 @@ def afficher_infos():
             
         for j in r:         
             # Lire l'image
-            img = cv2.imread('.temp/informations/' + dossiers[i] + '/{}.jpg'.format(j+1))
+            img = cv2.imread('.temp/informations/' + dossiers[i] + '/{}.jpg'.format(j+1))     
+            w, h, x, y = (140, 266, 13, 13)       
+            img = img[y:y+h, x:x+w]
             img = cv2.resize(img, (200, 400))
 
-            w, h, x, y = (175, 350, 16, 16)       
-            img = img[y:y+h, x:x+w]
-            
             # Extraire le texte depuis l'image
             if i == 0 or i == 1:
                 data = pytesseract.image_to_string(img, lang='eng', config='--psm 13 --oem 3 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ')
@@ -881,14 +880,9 @@ def choix1(opt):
         temps = t1 - t0
 
         print(f"> Le temps d'exécution est : {sec_en_min(temps)}\n")
-    elif opt == 2:
-        # Aller vers le deuxième menu
-        deuxieme_menu()
-    elif opt == 0:
-        quit()
-    else:
-        print("Option invalide.")
-        premier_menu()
+    elif opt == 2: deuxieme_menu()
+    elif opt == 0: quit()
+    else: premier_menu()
 
 def deuxieme_menu():
     # Nettoyer le console
