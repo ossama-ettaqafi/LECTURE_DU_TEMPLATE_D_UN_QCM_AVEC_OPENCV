@@ -580,7 +580,10 @@ def afficher_infos():
             img = cv2.imread('.temp/informations/' + dossiers[i] + '/{}.jpg'.format(j+1))     
             w, h, x, y = (140, 266, 13, 13)       
             img = img[y:y+h, x:x+w]
-            img = cv2.resize(img, (200, 400))
+            img = cv2.resize(img, (150, 350))
+
+            #cv2.imshow("aaa", img)
+            #cv2.waitKey(6)
 
             # Extraire le texte depuis l'image
             if i == 0 or i == 1:
