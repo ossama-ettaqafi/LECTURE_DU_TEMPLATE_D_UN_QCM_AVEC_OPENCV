@@ -578,7 +578,7 @@ def afficher_infos():
         for j in r:         
             # Lire l'image
             img = cv2.imread('.temp/informations/' + dossiers[i] + '/{}.jpg'.format(j+1))     
-            w, h, x, y = (140, 266, 13, 13)       
+            w, h, x, y = (142, 268, 13, 13)       
             img = img[y:y+h, x:x+w]
             img = cv2.resize(img, (150, 350))
 
@@ -935,7 +935,7 @@ def choix2(opt):
             print(f"> Le temps de traitement et d'affichage est : {sec_en_min(temps)}\n")
             
             # Revenir au menu
-            print("\n\n\tEntrez 'R' ou 'r' pour retourner au menu : ", end="")
+            print("\n\tEntrez 'R' ou 'r' pour retourner au menu : ", end="")
             key = input()
             
             if key == 'R' or key == 'r': deuxieme_menu()
@@ -946,7 +946,7 @@ def choix2(opt):
             print(f"> Le temps de traitement et d'affichage est : {sec_en_min(temps)}\n")
               
             # Revenir au menu
-            print("\n\n\tEntrez 'R' ou 'r' pour retourner au menu : ", end="")
+            print("\n\tEntrez 'R' ou 'r' pour retourner au menu : ", end="")
             key = input()
             
             if key == 'R' or key == 'r': deuxieme_menu()
@@ -966,7 +966,7 @@ def choix2(opt):
             # Supprimer le dossier '.temp'
             supprimer_tempfile()
             
-            print("\n\n\tEntrez 'Q' ou 'q' pour quitter le programme : ", end="")
+            print("\n\tEntrez 'Q' ou 'q' pour quitter le programme : ", end="")
             key = input()
 
             if key == 'Q' or key == 'q': quit()
