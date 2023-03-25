@@ -17,7 +17,8 @@ En employant OpenCV, vous pouvez effectuer des opérations de prétraitement sur
 En utilisant ces bibliothèques ensemble, vous pouvez effectuer une variété de tâches liées aux fichiers PDF pour répondre à vos besoins spécifiques. En utilisant ces outils, vous pouvez créer une application qui prend en entrée une image d'une page de QCM, détecte les questions et les réponses, extrait le texte et les marqueurs de réponse, et produit une sortie sous forme de texte ou de tableau.
 
 Voici une image du QCM sur lequel nous devons passer notre test :
-![image](https://user-images.githubusercontent.com/119759894/227742500-93d0f71a-66cc-4614-91f2-7497744b9d06.png)
+
+![page1](https://user-images.githubusercontent.com/119759894/227743152-3203f11e-0a80-4dfb-9d3d-f9ea01dc56a4.jpg)
 > Figure 1 : Image du notre QCM
 
 ## Réalisation
