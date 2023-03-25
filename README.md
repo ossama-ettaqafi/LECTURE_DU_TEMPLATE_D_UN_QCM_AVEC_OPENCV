@@ -19,55 +19,55 @@ En utilisant ces bibliothèques ensemble, vous pouvez effectuer une variété de
 Voici une image du QCM sur lequel nous devons passer notre test :
 
 <img src="https://user-images.githubusercontent.com/119759894/227744395-ccd879ed-4ac4-47f5-8963-6618f35b27c0.jpg" alt="image du qcm" width="500" align="center">
-> Figure 1 : Image du notre QCM
 
+> Figure 1 : Image du notre QCM
 
 ## Réalisation
 
 ### Interface
 <img src="https://user-images.githubusercontent.com/119759894/227742507-8320711c-3c46-4f59-b8b4-ae47b05e020d.png" alt="image du menu 1" width="500" align="center">
->   Figure 2 : Menu principale
 
+>   Figure 2 : Menu principale
 
 -   L'option 1 permet de traiter les QCMs de tous les étudiants qui sont stockés dans le dossier 'Etudiants/' situé dans le même emplacement que le programme. En choisissant cette option, le programme recherche automatiquement tous les QCMs des étudiants présents dans ce dossier et les traite selon les instructions programmées.
 -   L'option 2 permet de passer à un deuxième menu. Cette option peut être utile si l'utilisateur souhaite effectuer une tâche spécifique qui n'est pas incluse dans le premier menu. En choisissant cette option, le programme affiche un nouveau menu qui présente des options supplémentaires pour l'utilisateur.
 -   L'option 3 permet de quitter l'application. Si l'utilisateur choisit cette option, le programme se ferme immédiatement et l'utilisateur revient à l'interface de l'ordinateur ou du système d'exploitation qu'il utilise. Cette option est utile si l'utilisateur a terminé son travail dans le programme ou s'il souhaite quitter rapidement l'application sans effectuer d'autres tâches.
 
 <img src="https://user-images.githubusercontent.com/119759894/227742517-b9691cd2-4ae1-479f-ac82-e18d1dc1f85a.png" alt="image du menu 2" width="500" align="center">
->   Figure 3 : Deuxième menu
 
+>   Figure 3 : Deuxième menu
 
 -   Le choix [1] permet à l'utilisateur de sélectionner un QCM (au format PDF) d'un étudiant depuis l'ordinateur de l'étudiant, afin que le programme puisse poursuivre son traitement. Cette option offre la possibilité à l'utilisateur de spécifier manuellement le fichier PDF qu'il souhaite traiter, en naviguant dans les dossiers de l'ordinateur de l'étudiant pour trouver le fichier souhaité. Une fois le fichier sélectionné, le programme continuera à traiter le QCM selon les instructions programmées. Cette fonctionnalité est utile si l'utilisateur souhaite traiter des QCMs spécifiques qui ne sont pas stockés dans le dossier prédéfini 'Etudiants/' du programme.
 
 <img src="https://user-images.githubusercontent.com/119759894/227742528-babcd4fe-a915-408c-bc4c-e0170bbb7912.png" alt="importer qcm" width="500" align="center">
->   Figure 4 : Importer un fichier PDF du QCM
 
+>   Figure 4 : Importer un fichier PDF du QCM
 
 -   Le choix [9], pour retourner au premier menu.
 
 <img src="https://user-images.githubusercontent.com/119759894/227742547-17512a11-4c12-4bcf-af02-a88e35f518f8.png" alt="image du menu 3" width="500" align="center">
->   Figure 5 : Troisième menu
 
+>   Figure 5 : Troisième menu
 
 Lorsque l'utilisateur choisit l'option [1], le programme extrait automatiquement les informations de l'étudiant et de l'évaluation à partir du QCM PDF sélectionné et les stocke pour une utilisation ultérieure. L'option [3] est automatiquement ajoutée pour permettre à l'utilisateur d'afficher les informations extraites.
 
 De même, lorsque l'utilisateur sélectionne l'option [2], le programme extrait automatiquement les réponses de l'étudiant à partir du QCM PDF sélectionné et les stocke pour une utilisation ultérieure. L'option [4] est automatiquement ajoutée pour permettre à l'utilisateur d'afficher les réponses extraites.
 
 <img src="https://user-images.githubusercontent.com/119759894/227742554-284e416e-eed9-4325-b27c-2442a3ad86ab.png" alt="image du menu 3-2" width="500" align="center">
->   Figure 6 : Troisième menu (après choisir 1 et 2)
 
+>   Figure 6 : Troisième menu (après choisir 1 et 2)
 
 Résultat du choix [3], après quelques secondes :
 
 <img src="https://user-images.githubusercontent.com/119759894/227742558-1bc73e66-4ce3-4e42-81cf-9fc796ea411b.png" alt="image du resultat 1" width="500" align="center">
->   Figure 7 : Tableau des informations
 
+>   Figure 7 : Tableau des informations
 
 *Résultat du choix [4], après quelques minutes :*
 
 <img src="https://user-images.githubusercontent.com/119759894/227742563-42a5f482-0efd-442b-81b0-8f1b154bf0a2.png" alt="image du resultat 2" width="500" align="center">
->   Figure 8 : Tableau des réponses*
 
+>   Figure 8 : Tableau des réponses
 
 ### *Taches en arrière-plan*
 
