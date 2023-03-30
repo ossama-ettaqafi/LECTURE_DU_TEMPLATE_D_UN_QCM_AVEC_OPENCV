@@ -1,5 +1,5 @@
 # Application de lecuture d'un template des pages d'un QCM avec Python et OpenCV
-## Outils mise en main
+## Outils utilisés
 
 Nous avons utilisé dans la réalisation de cette application plusieurs outils les parmi, on trouve :
 
@@ -20,9 +20,9 @@ En combinant ces bibliothèques, il est possible de créer une application qui p
 
 > Figure 1 : Image du notre QCM
 
-## Réalisation
+## Réalisation de l’application
 
-### Interface
+### Interface d'utilisateur
 <img src="https://user-images.githubusercontent.com/119759894/227742507-8320711c-3c46-4f59-b8b4-ae47b05e020d.png" alt="image du menu 1" width="500" align="center">
 
 >   Figure 2 : Menu principale
@@ -67,7 +67,7 @@ Résultat du choix [3], après quelques secondes :
 
 >   Figure 8 : Tableau des réponses
 
-### *Taches en arrière-plan*
+### Taches en arrière-plan
 
 Le programme effectue plusieurs tâches en arrière-plan, notamment :
 
@@ -77,7 +77,7 @@ Le programme effectue plusieurs tâches en arrière-plan, notamment :
 
 **Résumé :** Le programme extrait et traite les images à partir du QCM en utilisant OpenCV et Pytesseract pour extraire les informations textuelles telles que les noms, les matricules, les réponses, etc., et stocke les résultats dans des variables pour affichage dans la console utilisateur.
 
-### Code
+### Partie Code
 
 Il existe plusieurs fonctions et méthodes importantes créées avec Python, parmi les :
 
