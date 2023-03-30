@@ -1,5 +1,5 @@
 # Application de lecuture d'un template des pages d'un QCM avec Python et OpenCV
-## Outils
+## Outils mise en main
 
 Nous avons utilisé dans la réalisation de cette application plusieurs outils les parmi, on trouve :
 
@@ -12,11 +12,9 @@ Nous avons utilisé dans la réalisation de cette application plusieurs outils l
 
 Ces bibliothèques peuvent être utiles pour une variété de tâches liées aux fichiers PDF, telles que la manipulation de pages, la modification de métadonnées, l'extraction de texte et d'images, la conversion en d'autres formats, etc.
 
-En employant OpenCV, vous pouvez effectuer des opérations de prétraitement sur l'image pour faciliter la détection des questions et des réponses. En utilisant PyTesseract, vous pouvez extraire le texte des réponses aux questions. En utilisant fitz, vous pouvez transformer votre QCM en images, ce qui peut être utile pour la reconnaissance de caractères (OCR) ou pour afficher les pages du QCM à l'utilisateur. En utilisant PyPDF2, vous pouvez découper votre QCM en plusieurs fichiers PDF, ce qui peut faciliter la distribution et la gestion de ces fichiers.
+En utilisant différentes bibliothèques comme OpenCV, PyTesseract, fitz et PyPDF2, il est possible de réaliser plusieurs tâches liées aux fichiers PDF. Ces outils permettent de prétraiter les images pour faciliter la détection des questions et des réponses, extraire le texte des réponses, transformer les pages du QCM en images pour la reconnaissance de caractères (OCR), découper les fichiers PDF en plusieurs parties pour faciliter leur gestion et distribution.
 
-En utilisant ces bibliothèques ensemble, vous pouvez effectuer une variété de tâches liées aux fichiers PDF pour répondre à vos besoins spécifiques. En utilisant ces outils, vous pouvez créer une application qui prend en entrée une image d'une page de QCM, détecte les questions et les réponses, extrait le texte et les marqueurs de réponse, et produit une sortie sous forme de texte ou de tableau.
-
-Voici une image du QCM sur lequel nous devons passer notre test :
+En combinant ces bibliothèques, il est possible de créer une application qui prend en entrée une image de QCM, détecte les informations et les réponses, extrait le texte et les marqueurs de réponse, et produit une sortie sous forme de texte ou de tableau. Ainsi, il est possible d'automatiser la correction de QCM et de faciliter leur traitement. Voici une image du QCM sur lequel nous devons passer notre test :
 
 <img src="https://user-images.githubusercontent.com/119759894/227744395-ccd879ed-4ac4-47f5-8963-6618f35b27c0.jpg" alt="image du qcm" width="500" align="center">
 
