@@ -1,6 +1,7 @@
 # Application de lecuture d'un template des pages d'un QCM avec Python et OpenCV
-## Outils utilisés
+J'ai travaillé avec passion sur ce projet pour créer une application qui permet d'extraire les réponses d'un étudiant dans un QCM en utilisant Python et la bibliothèque OpenCV. Le projet m'a permis de développer mes compétences en programmation et en traitement d'images tout en répondant à un besoin concret dans l'éducation. La détection optique de caractères (OCR) a été l'un des outils essentiels pour identifier les réponses correctes. Je suis fier(e) d'avoir accompli ce projet avec succès et j'ai hâte de continuer à développer mes compétences techniques dans d'autres projets similaires.
 
+## Outils utilisés
 Nous avons utilisé dans la réalisation de cette application plusieurs outils les parmi, on trouve :
 
 -   **OpenCV :** c'est une bibliothèque open-source de vision par ordinateur qui offre des fonctionnalités de traitement d'image, de reconnaissance d'objet et de suivi de mouvement. Vous pouvez utiliser OpenCV pour effectuer des opérations de prétraitement sur l'image, telles que le redimensionnement, le flou, la binarisation, la détection de contours et la reconnaissance de formes.
@@ -86,3 +87,17 @@ Il existe plusieurs fonctions et méthodes importantes créées avec Python, par
 -   **‘afficher_reponses’ :** permet d'afficher les réponses d'un étudiant en se basant sur les images des réponses sauvegardées. Elle parcourt chaque question et chaque réponse de chaque question pour extraire le texte de l'image et trouver la réponse de l'étudiant en utilisant la fonction **‘trouver_reponse’**. Si la réponse n'a pas été trouvée, la fonction affiche "Aucune réponse". Si la réponse n'a pas été acceptée, la fonction affiche "La réponse est non acceptée". Sinon, la fonction affiche la réponse trouvée. Enfin, les dossiers de réponses sont supprimés.
 -   **‘inverser_image’ :** prend le chemin d'une image en entrée, teste si elle est inversée à l'aide de la fonction ‘est_inversee’, et renvoie l'image inversée si elle est inversée, sinon renvoie l'image non inversée.
 
+## Améliorations futures
+Voici la liste des améliorations que nous avons prévues pour les futures versions de notre application d'extraction de réponses de QCM :
+
+-   Amélioration de la reconnaissance de caractères en utilisant des algorithmes plus sophistiqués pour augmenter la précision.
+-   Ajout d'une fonctionnalité de correction automatique pour permettre aux professeurs de corriger les QCM plus rapidement et plus efficacement.
+-   Création d'une interface utilisateur graphique (GUI) pour simplifier l'utilisation de l'application.
+-   Ajout d'une fonctionnalité de stockage des données extraites pour faciliter la gestion et la correction des QCMs.
+-   Ajout d'une fonctionnalité de parallélisation des tâches et optimisation de la mise en cache pour augmenter la vitesse de détection des données avec pytessract (OCR).
+-   Ajout d'une version anglaise pour faciliter l'utilisation par les utilisateurs anglophones.
+
+Ces améliorations permettront de traiter rapidement un grand nombre de QCMs pour une gestion plus efficace des examens.
+
+## Crédits
+Ce projet a été réalisé par [OSSAMA ETTAQAFI](https://www.linkedin.com/in/afatratinmypocket/) en utilisant Python et la bibliothèque OpenCV pour la détection d'images et l'OCR. Il est libre de droit et peut être utilisé ou modifié à des fins non commerciales.
