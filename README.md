@@ -1,7 +1,5 @@
 # Application de lecture d'un modèle de pages de QCM avec Python et OpenCV
 
-Bien sûr, voici la version du projet avec les parties numérotées :
-
 **1. Introduction**
 
 J'ai travaillé avec passion sur ce projet pour créer une application permettant d'extraire les réponses d'un étudiant dans un QCM en utilisant Python et la bibliothèque OpenCV. Le projet m'a permis de développer mes compétences en programmation et en traitement d'images tout en répondant à un besoin concret dans le domaine de l'éducation. La détection optique de caractères (OCR) a été l'un des outils essentiels pour identifier les réponses correctes. Je suis fier(e) d'avoir mené à bien ce projet et j'ai hâte de continuer à développer mes compétences techniques dans d'autres projets similaires.
