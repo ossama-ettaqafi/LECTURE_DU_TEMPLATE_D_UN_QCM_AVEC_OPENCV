@@ -2,12 +2,12 @@
 
 ## Table des Matières
 
-1. [Introduction](#introduction)
-2. [Objectifs du Projet](#objectifs-du-projet)
-3. [Outils Utilisés](#outils-utilisés)
-4. [Fonctionnalités](#fonctionnalités)
-5. [Spécifications Techniques](#spécifications-techniques)
-6. [Améliorations Futures](#améliorations-futures)
+- [Introduction](#introduction)
+- [Objectifs du Projet](#objectifs-du-projet)
+- [Outils Utilisés](#outils-utilisés)
+- [Fonctionnalités](#fonctionnalités)
+- [Spécifications Techniques](#spécifications-techniques)
+- [Améliorations Futures](#améliorations-futures)
 
 ## Introduction
 
