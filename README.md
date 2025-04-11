@@ -1,79 +1,88 @@
-# Cahier des Charges pour l'Application de Lecture d'un Modèle de Pages de QCM avec Python et OpenCV
+# 📄 Cahier des Charges – Application de Lecture de QCM avec OpenCV
 
-## Table des Matières
+## 📚 Table des Matières
 
-- [Introduction](#introduction)
-- [Objectifs du Projet](#objectifs-du-projet)
-- [Outils Utilisés](#outils-utilisés)
-- [Fonctionnalités](#fonctionnalités)
-- [Spécifications Techniques](#spécifications-techniques)
-- [Améliorations Futures](#améliorations-futures)
+- [🔍 Introduction](#-introduction)
+- [🎯 Objectifs du Projet](#-objectifs-du-projet)
+- [🛠️ Outils Utilisés](#-outils-utilisés)
+- [⚙️ Fonctionnalités](#-fonctionnalités)
+- [📐 Spécifications Techniques](#-spécifications-techniques)
+- [🚀 Améliorations Futures](#-améliorations-futures)
 
-## Introduction
+## 🔍 Introduction
 
-Ce cahier des charges détaille le développement d'une application permettant d'extraire les réponses des étudiants à partir de QCM (Questionnaire à Choix Multiples) en utilisant Python et OpenCV. Cette application vise à automatiser la correction des QCM et à fournir une solution efficace pour les enseignants et les institutions éducatives.
+Ce projet a pour but de développer une application capable d’extraire automatiquement les réponses des étudiants à partir de QCM (Questionnaires à Choix Multiples) scannés ou en format PDF. Grâce à Python et à la bibliothèque OpenCV, cette application vise à automatiser la correction et faciliter le travail des enseignants.
 
-## Objectifs du Projet
+## 🎯 Objectifs du Projet
 
-- Automatiser l'extraction des réponses des étudiants à partir de QCM scannés ou en format PDF.
-- Utiliser des techniques de traitement d'image et de reconnaissance optique de caractères (OCR) pour extraire les informations pertinentes.
-- Fournir une interface utilisateur intuitive pour faciliter l'utilisation de l'application.
-- Assurer la précision et la fiabilité de l'extraction des données.
+- Automatiser l'extraction des réponses depuis des fichiers PDF de QCM.
+- Utiliser le traitement d’image et l’OCR pour détecter et lire les réponses.
+- Proposer une interface simple (ligne de commande).
+- Obtenir une reconnaissance fiable et rapide des informations.
 
-## Outils Utilisés
+## 🛠️ Outils Utilisés
 
-### Bibliothèques et Langages
-- **Python :** Langage principal pour le développement de l'application.
-- **OpenCV :** Bibliothèque pour le traitement d'images et la reconnaissance d'objets.
-- **NumPy :** Pour la manipulation de tableaux multidimensionnels.
-- **PyTesseract :** Pour la reconnaissance optique de caractères (OCR).
-- **fitz (PyMuPDF) :** Pour la manipulation de fichiers PDF.
-- **PyPDF2 :** Pour découper et manipuler les fichiers PDF.
+### Langage de Programmation
 
-## Fonctionnalités
+- **Python 3.x**
 
-### Interface Utilisateur
-L'application disposera d'une interface en ligne de commande (CLI) avec les menus suivants :
+### Bibliothèques Principales
+
+- [OpenCV](https://opencv.org/) – Traitement d'image
+- [NumPy](https://numpy.org/) – Manipulation de matrices
+- [PyTesseract](https://github.com/madmaze/pytesseract) – OCR (Reconnaissance Optique de Caractères)
+- [PyMuPDF (fitz)](https://pymupdf.readthedocs.io/) – Lecture des fichiers PDF
+- [PyPDF2](https://pythonhosted.org/PyPDF2/) – Manipulation des fichiers PDF
+
+## ⚙️ Fonctionnalités
+
+### Interface Utilisateur (CLI)
 
 #### Menu Principal
-- **Option 1 :** Traiter les QCMs de tous les étudiants stockés dans un dossier prédéfini.
-- **Option 2 :** Accéder à un menu pour des tâches spécifiques.
-- **Option 3 :** Quitter l'application.
+- `1` – Traiter tous les QCMs d’un dossier prédéfini
+- `2` – Accéder aux fonctions avancées
+- `3` – Quitter
 
-#### Deuxième Menu
-- **Choix 1 :** Sélectionner un QCM d'un étudiant à partir de l'ordinateur.
-- **Choix 9 :** Retourner au menu principal.
+#### Menu Secondaire
+- `1` – Sélectionner un QCM individuel
+- `9` – Retour au menu principal
 
-#### Troisième Menu
-- **Choix 1 :** Extraire les informations de l'étudiant à partir du QCM.
-- **Choix 2 :** Extraire les réponses de l'étudiant à partir du QCM.
-- **Choix 9 :** Retourner au menu principal.
+#### Menu Tertiaire
+- `1` – Extraire les informations de l’étudiant
+- `2` – Extraire les réponses de l’étudiant
+- `9` – Retour au menu principal
 
 ### Fonctionnalités Techniques
-- **Extraction des images :** Extraire les pages du QCM à partir de fichiers PDF.
-- **Traitement des images :** Améliorer la qualité des images pour une meilleure reconnaissance.
-- **OCR :** Utiliser PyTesseract pour extraire le texte des réponses.
-- **Stockage des résultats :** Enregistrer les données extraites pour une utilisation ultérieure.
 
-### Fonctions Importantes
-- **'haute_qualite':** Améliorer la qualité des images.
-- **'afficher_infos':** Extraire et afficher les informations de l'étudiant.
-- **'afficher_reponses':** Extraire et afficher les réponses de l'étudiant.
+- **Extraction de pages PDF**
+- **Amélioration d’image** (ex. redressement, contraste)
+- **Reconnaissance OCR** avec PyTesseract
+- **Stockage des résultats** pour une analyse ultérieure
 
-## Spécifications Techniques
+### Fonctions Clés
 
-### Exigences Matérielles et Logiciels
-- **Matériel :** Ordinateur avec une configuration de base suffisante pour exécuter Python et OpenCV.
-- **Logiciel :** Python 3.x, OpenCV, NumPy, PyTesseract, fitz (PyMuPDF), PyPDF2.
+- `haute_qualite()` – Améliore la lisibilité des images
+- `afficher_infos()` – Extrait les informations de l’étudiant
+- `afficher_reponses()` – Extrait les réponses choisies
+
+## 📐 Spécifications Techniques
+
+### Configuration Requise
+
+- **Matériel :** PC classique avec Python installé
+- **Logiciel :** Python 3.x, bibliothèques listées ci-dessus
 
 ### Exigences de Performance
-- **Précision :** L'application doit atteindre un taux de précision d'au moins 95% pour la reconnaissance des caractères.
-- **Vitesse :** L'application doit traiter un QCM en moins de 2 minutes.
 
-## Améliorations Futures
+- **Précision OCR :** ≥ 95 %
+- **Temps de traitement :** ≤ 2 minutes par QCM
 
-- **Amélioration de l'OCR :** Améliorer la précision de la reconnaissance de caractères.
-- **Correction Automatique :** Ajouter une fonctionnalité pour corriger automatiquement les QCM.
-- **Interface Graphique (GUI) :** Développer une interface utilisateur graphique pour une utilisation plus conviviale.
-- **Gestion des Données :** Ajouter une fonctionnalité pour le stockage et la gestion des données des QCM.
-- **Optimisation des Performances :** Optimiser la vitesse de détection et de traitement des données.
+## 🚀 Améliorations Futures
+
+- 🔎 **Amélioration de la précision OCR**
+- 🧠 **Correction automatique des réponses**
+- 🖥️ **Ajout d’une interface graphique (GUI)**
+- 📊 **Gestion et stockage des résultats**
+- ⚡ **Optimisation des performances**
+
+💡 *Ce projet est en cours de développement. Toute contribution est la bienvenue !*
