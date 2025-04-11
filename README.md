@@ -84,5 +84,3 @@ Ce projet a pour but de développer une application capable d’extraire automat
 - 🖥️ **Ajout d’une interface graphique (GUI)**
 - 📊 **Gestion et stockage des résultats**
 - ⚡ **Optimisation des performances**
-
-💡 *Ce projet est en cours de développement. Toute contribution est la bienvenue !*
